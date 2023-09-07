@@ -1,17 +1,7 @@
 import './App.css'
 import useSWR from 'swr'
-
-interface Example {
-  id: number;
-  example: string;
-}
-interface Word {
-  id: number;
-  word: string;
-  translation?: string;
-  source?: string;
-  examples: Example[];
-}
+import { Word } from './types';
+import { WordDisplay } from './WordDisplay';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -27,12 +17,8 @@ function App() {
     <>
       <h1>My Chinese Words</h1>
       <div className="wordlist">
-        {data.words.map(({ id, word, translation, source }: Word) => (
-          <div key={id}>
-            <div>{word}</div>
-            <div>{translation}</div>
-            <div>{source}</div>
-          </div>
+        {data.words.map((word: Word) => (
+          <WordDisplay word={word} />
         ))}
       </div>
     </>
