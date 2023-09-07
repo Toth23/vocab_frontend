@@ -1,33 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import useSWR from 'swr'
+
+interface Example {
+  id: number;
+  example: string;
+}
+interface Word {
+  id: number;
+  word: string;
+  translation?: string;
+  source?: string;
+  examples: Example[];
+}
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { data, error, isLoading } = useSWR('http://localhost:3000/api/vocab', fetcher)
+
+  if (error) return "An error has occurred.";
+  if (isLoading) return "Loading...";
+
+  console.log(data.words)
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <h1>My Chinese Words</h1>
+      <div className="wordlist">
+        {data.words.map(({ id, word, translation, source }: Word) => (
+          <div key={id}>
+            <div>{word}</div>
+            <div>{translation}</div>
+            <div>{source}</div>
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
