@@ -23,12 +23,25 @@ function App() {
       },
     })
     const responseJson = await response.json();
-    console.log(responseJson)
     mutate({ ...data, words: [...data.words, responseJson.word] })
   }
   const deleteWord = async (wordId: number) => {
     await fetch(`http://localhost:3000/api/vocab/${wordId}`, { method: 'DELETE' })
     mutate({ ...data, words: data.words.filter((w: Word) => w.id !== wordId) })
+  }
+  const addExample = async (wordId: number, example: string) => {
+    const payload = { example };
+    const response = await fetch(`http://localhost:3000/api/vocab/${wordId}/examples`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    })
+    const responseJson = await response.json();
+    mutate({ ...data, words: data.words.map((w: Word) => w.id === wordId ? w : 
+      {...w, examples: [...w.examples, responseJson]}) })
   }
 
   return (
@@ -36,7 +49,7 @@ function App() {
       <h1>My Chinese Words</h1>
       <div className="wordlist">
         {data.words.map((word: Word) => (
-          <WordDisplay word={word} key={word.id} deleteWord={deleteWord} />
+          <WordDisplay word={word} key={word.id} deleteWord={deleteWord} addExample={addExample} />
         ))}
       </div>
       <NewWord addWord={addWord} />
