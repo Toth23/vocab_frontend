@@ -20,8 +20,9 @@ export const WordDisplay = ({ word: word_entity }: { word: Word }) => {
             {showExamples ? (
                 <ul>
                     {examples.map((example: Example) => (
-                        <li>{example.example}</li>
+                        <li key={example.id}>{example.example}</li>
                     ))}
+                    <li key="new"><button>Add example</button></li>
                 </ul>
                 ) : null
             }
