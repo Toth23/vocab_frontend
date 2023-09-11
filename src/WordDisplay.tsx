@@ -1,7 +1,12 @@
 import { Example, Word } from './types';
 import { useState } from 'react';
 
-export const WordDisplay = ({ word: word_entity }: { word: Word }) => {
+interface WordDisplayProps {
+    word: Word;
+    deleteWord: (wordId: number) => void;
+}
+
+export const WordDisplay = ({ word: word_entity, deleteWord }: WordDisplayProps) => {
 
     const [showExamples, setShowExamples] = useState(false)
 
@@ -16,6 +21,7 @@ export const WordDisplay = ({ word: word_entity }: { word: Word }) => {
                 <div>{translation}</div>
                 <div>{source}</div>
                 <button onClick={toggleExamples}>Show examples</button>
+                <button onClick={() => { deleteWord(word_entity.id) }}>Delete</button>
             </div>
             {showExamples ? (
                 <ul>
@@ -24,7 +30,7 @@ export const WordDisplay = ({ word: word_entity }: { word: Word }) => {
                     ))}
                     <li key="new"><button>Add example</button></li>
                 </ul>
-                ) : null
+            ) : null
             }
         </>
     )

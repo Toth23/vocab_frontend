@@ -26,13 +26,17 @@ function App() {
     console.log(responseJson)
     mutate({ ...data, words: [...data.words, responseJson.word] })
   }
+  const deleteWord = async (wordId: number) => {
+    await fetch(`http://localhost:3000/api/vocab/${wordId}`, { method: 'DELETE' })
+    mutate({ ...data, words: data.words.filter((w: Word) => w.id !== wordId) })
+  }
 
   return (
     <>
       <h1>My Chinese Words</h1>
       <div className="wordlist">
         {data.words.map((word: Word) => (
-          <WordDisplay word={word} key={word.id} />
+          <WordDisplay word={word} key={word.id} deleteWord={deleteWord} />
         ))}
       </div>
       <NewWord addWord={addWord} />
