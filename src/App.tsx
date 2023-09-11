@@ -40,8 +40,19 @@ function App() {
       },
     })
     const responseJson = await response.json();
-    mutate({ ...data, words: data.words.map((w: Word) => w.id === wordId ? w : 
-      {...w, examples: [...w.examples, responseJson]}) })
+    mutate({
+      ...data, words: data.words.map((w: Word) => w.id === wordId ? w :
+        { ...w, examples: [...w.examples, responseJson] })
+    })
+  }
+  const deleteExample = async (wordId: number, exampleId: number) => {
+    await fetch(`http://localhost:3000/api/vocab/${wordId}/examples/${exampleId}`, {
+      method: 'DELETE',
+    })
+    mutate({
+      ...data, words: data.words.map((w: Word) => w.id === wordId ? w :
+        { ...w, examples: w.examples.filter(e => e.id !== exampleId) })
+    })
   }
 
   return (
@@ -49,7 +60,13 @@ function App() {
       <h1>My Chinese Words</h1>
       <div className="wordlist">
         {data.words.map((word: Word) => (
-          <WordDisplay word={word} key={word.id} deleteWord={deleteWord} addExample={addExample} />
+          <WordDisplay
+            word={word}
+            key={word.id}
+            deleteWord={deleteWord}
+            addExample={addExample}
+            deleteExample={deleteExample}
+          />
         ))}
       </div>
       <NewWord addWord={addWord} />

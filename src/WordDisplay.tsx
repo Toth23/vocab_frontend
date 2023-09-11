@@ -5,9 +5,10 @@ interface WordDisplayProps {
     word: Word;
     deleteWord: (wordId: number) => void;
     addExample: (wordId: number, example: string) => void;
+    deleteExample: (wordId: number, exampleId: number) => void;
 }
 
-export const WordDisplay = ({ word: word_entity, deleteWord, addExample }: WordDisplayProps) => {
+export const WordDisplay = ({ word: word_entity, deleteWord, addExample, deleteExample }: WordDisplayProps) => {
 
     const [showExamples, setShowExamples] = useState(false)
     const [newExampleInput, setNewExampleInput] = useState('')
@@ -28,7 +29,10 @@ export const WordDisplay = ({ word: word_entity, deleteWord, addExample }: WordD
             {showExamples ? (
                 <ul>
                     {examples.map((example: Example) => (
-                        <li key={example.id}>{example.example}</li>
+                        <li key={example.id}>
+                            <div>{example.example}</div>
+                            <button onClick={() => deleteExample(id, example.id)}>Delete example</button>
+                        </li>
                     ))}
                     <li key="new">
                         <input value={newExampleInput} onChange={e => setNewExampleInput(e.target.value)} />
