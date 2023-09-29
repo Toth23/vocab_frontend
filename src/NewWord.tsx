@@ -25,7 +25,11 @@ export const NewWord = ({ addWord }: NewWordProps) => {
                 Source:
                 <input name="source" value={source} onChange={e => setSource(e.target.value)}></input>
             </label>
-            <button onClick={() => addWord(word, translation, source)}>Add word</button>
+            <button onClick={() => {
+                addWord(word, translation, source);
+                setWord('');
+                setTranslation('');
+            }}>Add word</button>
         </div>
     )
 }
