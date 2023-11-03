@@ -13,7 +13,7 @@ function App() {
   if (isLoading) return "Loading...";
 
   const addWord = async (word: string, translation?: string, source?: string) => {
-    const payload = { word, translation: translation || null, source: source || null };
+    const payload = { word, translation: translation ?? null, source: source ?? null };
     const response = await fetch('http://localhost:3000/api/vocab', {
       method: 'POST',
       body: JSON.stringify(payload),
@@ -23,11 +23,11 @@ function App() {
       },
     })
     const responseJson = await response.json();
-    mutate({ ...data, words: [...data.words, responseJson.word] })
+    await mutate({...data, words: [...data.words, responseJson.word]})
   }
   const deleteWord = async (wordId: number) => {
     await fetch(`http://localhost:3000/api/vocab/${wordId}`, { method: 'DELETE' })
-    mutate({ ...data, words: data.words.filter((w: Word) => w.id !== wordId) })
+    await mutate({...data, words: data.words.filter((w: Word) => w.id !== wordId)})
   }
   const addExample = async (wordId: number, example: string) => {
     const payload = { example };
@@ -40,18 +40,18 @@ function App() {
       },
     })
     const responseJson = await response.json();
-    mutate({
+    await mutate({
       ...data, words: data.words.map((w: Word) => w.id === wordId ? w :
-        { ...w, examples: [...w.examples, responseJson] })
+          {...w, examples: [...w.examples, responseJson]})
     })
   }
   const deleteExample = async (wordId: number, exampleId: number) => {
     await fetch(`http://localhost:3000/api/vocab/${wordId}/examples/${exampleId}`, {
       method: 'DELETE',
     })
-    mutate({
+    await mutate({
       ...data, words: data.words.map((w: Word) => w.id === wordId ? w :
-        { ...w, examples: w.examples.filter(e => e.id !== exampleId) })
+          {...w, examples: w.examples.filter(e => e.id !== exampleId)})
     })
   }
 
