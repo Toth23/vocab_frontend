@@ -5,7 +5,20 @@
   text-align: center;
 }
 
-.word-item {
+.wordlist {
   display: flex;
+  flex-wrap: wrap;
+}
+
+.word-card {
+  margin: 10px;
+  width: 300px;
+}
+
+.word-card-content {
+  height: 250px;
+
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
 }

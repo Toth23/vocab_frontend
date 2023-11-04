@@ -1,49 +1,103 @@
-import { Example, Word } from './types';
-import { useState } from 'react';
+import {Word} from './types';
+import {useState} from 'react';
+import {Button, Card, Divider, Flex, Input, Popconfirm, Popover, Skeleton, Tooltip} from "antd";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  PlusCircleOutlined,
+  ReadOutlined
+} from '@ant-design/icons';
+import {ExampleDisplay} from "./ExampleDisplay.tsx";
 
 interface WordDisplayProps {
-    word: Word;
-    deleteWord: (wordId: number) => void;
-    addExample: (wordId: number, example: string) => void;
-    deleteExample: (wordId: number, exampleId: number) => void;
+  word: Word;
+  deleteWord: (wordId: number) => void;
+  addExample: (wordId: number, example: string) => void;
+  deleteExample: (wordId: number, exampleId: number) => void;
 }
 
-export const WordDisplay = ({ word: word_entity, deleteWord, addExample, deleteExample }: WordDisplayProps) => {
+export const WordDisplay = ({word: wordEntity, deleteWord, addExample, deleteExample}: WordDisplayProps) => {
 
-    const [showExamples, setShowExamples] = useState(false)
-    const [newExampleInput, setNewExampleInput] = useState('')
+  const [showTranslation, setShowTranslation] = useState(false)
+  const [showExamples, setShowExamples] = useState(false)
+  const [newExampleInput, setNewExampleInput] = useState('')
 
-    const toggleExamples = () => setShowExamples(current => !current);
+  const toggleExamples = () => setShowExamples(current => !current);
 
-    const { id, word, translation, source, examples } = word_entity;
+  const {id, word, translation, source, date_added, examples} = wordEntity;
 
-    return (
-        <>
-            <div className="word-item" key={id}>
-                <div>{word}</div>
-                <div>{translation}</div>
-                <div>{source}</div>
-                <button onClick={toggleExamples}>Show examples</button>
-                <button onClick={() => { deleteWord(id) }}>Delete</button>
-            </div>
-            {showExamples ? (
-                <ul>
-                    {examples.map((example: Example) => (
-                        <li key={example.id}>
-                            <div>{example.example}</div>
-                            <button onClick={() => deleteExample(id, example.id)}>Delete example</button>
-                        </li>
-                    ))}
-                    <li key="new">
-                        <input value={newExampleInput} onChange={e => setNewExampleInput(e.target.value)} />
-                        <button disabled={newExampleInput.length === 0} onClick={() => {
-                            addExample(id, newExampleInput)
-                            setNewExampleInput('')
-                        }}>Add example</button>
-                    </li>
-                </ul>
-            ) : null
-            }
-        </>
-    )
+  const editButton = <Button
+    type={"text"}
+    icon={<EditOutlined/>}
+    key={"edit"}
+  />
+  const deleteButton =
+    <Popconfirm
+      title="Delete this word"
+      description="Are you sure you want to delete this word?"
+      onConfirm={() => deleteWord(id)}
+      okText="Yes"
+      cancelText="No"
+      key={"delete"}
+    >
+      <Button
+        type={"text"}
+        icon={<DeleteOutlined/>}
+      />
+    </Popconfirm>
+
+  const toggleTranslationButton = <Tooltip title={"Toggle translation"}>
+    <Button
+      icon={showTranslation ? <EyeInvisibleOutlined/> : <EyeOutlined/>}
+      onClick={() => setShowTranslation(current => !current)}
+      key={"toggleTranslation"}
+      type={"text"}
+    />
+  </Tooltip>
+  const toggleExamplesButton = <Tooltip title={"Toggle examples"}>
+    <Button
+      icon={<ReadOutlined/>}
+      onClick={toggleExamples}
+      key={"toggleExamples"}
+      type={"text"}
+    />
+  </Tooltip>
+  const addExampleContent = <>
+    <Input value={newExampleInput} onChange={e => setNewExampleInput(e.target.value)}/>
+    <Button disabled={newExampleInput.length === 0} onClick={() => {
+      addExample(id, newExampleInput)
+      setNewExampleInput('')
+    }}>Save
+    </Button>
+  </>
+  const addExamplePopover = <Popover title={"Add example"} content={addExampleContent}>
+    <Button icon={<PlusCircleOutlined/>} type={"text"}/>
+  </Popover>
+
+  return (
+    <Card title={word} extra={[editButton, deleteButton]} className="word-card" key={id} actions={[
+      toggleTranslationButton,
+      toggleExamplesButton,
+      addExamplePopover,
+    ]}>
+      <div className="word-card-content">
+        <Flex justify={"space-between"}>
+          <div>{source}</div>
+          <div>{date_added}</div>
+        </Flex>
+        {showTranslation ?
+          <p style={{margin: 0, paddingTop: 10}}>{translation}</p> :
+          <Skeleton title={false} paragraph={{rows: 1, width: "100%"}}/>
+        }
+        <Divider/>
+        <ExampleDisplay examples={examples}
+                        wordId={id}
+                        deleteExample={deleteExample}
+                        showExamples={showExamples}
+        />
+      </div>
+    </Card>
+  )
 }

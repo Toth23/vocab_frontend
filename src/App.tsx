@@ -1,19 +1,19 @@
 import './App.css'
 import useSWR from 'swr'
-import { Word } from './types';
-import { WordDisplay } from './WordDisplay';
-import { NewWord } from './NewWord';
+import {Word} from './types';
+import {NewWord} from './NewWord';
+import {WordDisplay} from "./WordDisplay.tsx";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function App() {
-  const { data, error, isLoading, mutate } = useSWR('http://localhost:3000/api/vocab', fetcher)
+  const {data, error, isLoading, mutate} = useSWR('http://localhost:3000/api/vocab', fetcher)
 
   if (error) return "An error has occurred.";
   if (isLoading) return "Loading...";
 
   const addWord = async (word: string, translation?: string, source?: string) => {
-    const payload = { word, translation: translation ?? null, source: source ?? null };
+    const payload = {word, translation: translation ?? null, source: source ?? null};
     const response = await fetch('http://localhost:3000/api/vocab', {
       method: 'POST',
       body: JSON.stringify(payload),
@@ -26,11 +26,11 @@ function App() {
     await mutate({...data, words: [...data.words, responseJson.word]})
   }
   const deleteWord = async (wordId: number) => {
-    await fetch(`http://localhost:3000/api/vocab/${wordId}`, { method: 'DELETE' })
+    await fetch(`http://localhost:3000/api/vocab/${wordId}`, {method: 'DELETE'})
     await mutate({...data, words: data.words.filter((w: Word) => w.id !== wordId)})
   }
   const addExample = async (wordId: number, example: string) => {
-    const payload = { example };
+    const payload = {example};
     const response = await fetch(`http://localhost:3000/api/vocab/${wordId}/examples`, {
       method: 'POST',
       body: JSON.stringify(payload),
@@ -42,7 +42,7 @@ function App() {
     const responseJson = await response.json();
     await mutate({
       ...data, words: data.words.map((w: Word) => w.id === wordId ? w :
-          {...w, examples: [...w.examples, responseJson]})
+        {...w, examples: [...w.examples, responseJson]})
     })
   }
   const deleteExample = async (wordId: number, exampleId: number) => {
@@ -51,7 +51,7 @@ function App() {
     })
     await mutate({
       ...data, words: data.words.map((w: Word) => w.id === wordId ? w :
-          {...w, examples: w.examples.filter(e => e.id !== exampleId)})
+        {...w, examples: w.examples.filter(e => e.id !== exampleId)})
     })
   }
 
@@ -69,7 +69,7 @@ function App() {
           />
         ))}
       </div>
-      <NewWord addWord={addWord} />
+      <NewWord addWord={addWord}/>
     </>
   )
 }

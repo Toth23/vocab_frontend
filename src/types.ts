@@ -6,6 +6,7 @@ export interface Example {
 export interface Word {
     id: number;
     word: string;
+    date_added: string;
     translation?: string;
     source?: string;
     examples: Example[];
