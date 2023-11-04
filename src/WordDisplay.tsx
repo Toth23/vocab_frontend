@@ -1,6 +1,6 @@
 import {Word} from './types';
 import {useState} from 'react';
-import {Button, Card, Divider, Flex, Input, Popconfirm, Popover, Skeleton, Tooltip, Typography} from "antd";
+import {Button, Card, Divider, Flex, Input, Popconfirm, Popover, Skeleton, Space, Tooltip, Typography} from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -25,6 +25,7 @@ export const WordDisplay = ({word: wordEntity, deleteWord, addExample, deleteExa
   const [showTranslation, setShowTranslation] = useState(false)
   const [showExamples, setShowExamples] = useState(false)
   const [newExampleInput, setNewExampleInput] = useState('')
+  const [addExamplePopoverOpen, setAddExamplePopoverOpen] = useState(false);
 
   const toggleExamples = () => setShowExamples(current => !current);
 
@@ -66,16 +67,34 @@ export const WordDisplay = ({word: wordEntity, deleteWord, addExample, deleteExa
       type={"text"}
     />
   </Tooltip>
-  const addExampleContent = <>
+  const addExampleContent = <Space direction={"vertical"}>
     <Input value={newExampleInput} onChange={e => setNewExampleInput(e.target.value)}/>
-    <Button disabled={newExampleInput.length === 0} onClick={() => {
-      addExample(id, newExampleInput)
-      setNewExampleInput('')
-    }}>Save
-    </Button>
-  </>
-  const addExamplePopover = <Popover title={"Add example"} content={addExampleContent}>
-    <Button icon={<PlusCircleOutlined/>} type={"text"}/>
+    <Flex justify={"space-between"}>
+      <Button onClick={() => {
+        setNewExampleInput('');
+        setAddExamplePopoverOpen(false);
+      }}>
+        Cancel
+      </Button>
+      <Button type={"primary"} disabled={newExampleInput.length === 0} onClick={() => {
+        addExample(id, newExampleInput);
+        setNewExampleInput('');
+        setAddExamplePopoverOpen(false);
+      }}>
+        Save
+      </Button>
+    </Flex>
+  </Space>
+  const addExamplePopover = <Popover
+    title={"Add example"}
+    content={addExampleContent}
+    open={addExamplePopoverOpen}
+  >
+    <div>
+      <Tooltip title={"Toggle examples"}>
+        <Button icon={<PlusCircleOutlined/>} onClick={() => setAddExamplePopoverOpen(true)} type={"text"}/>
+      </Tooltip>
+    </div>
   </Popover>
 
   return (
