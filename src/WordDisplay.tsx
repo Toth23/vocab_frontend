@@ -1,6 +1,6 @@
 import {Word} from './types';
 import {useState} from 'react';
-import {Button, Card, Divider, Flex, Input, Popconfirm, Popover, Skeleton, Tooltip} from "antd";
+import {Button, Card, Divider, Flex, Input, Popconfirm, Popover, Skeleton, Tooltip, Typography} from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -10,6 +10,8 @@ import {
   ReadOutlined
 } from '@ant-design/icons';
 import {ExampleDisplay} from "./ExampleDisplay.tsx";
+
+const {Text} = Typography;
 
 interface WordDisplayProps {
   word: Word;
@@ -88,7 +90,8 @@ export const WordDisplay = ({word: wordEntity, deleteWord, addExample, deleteExa
           <div>{date_added}</div>
         </Flex>
         {showTranslation ?
-          <p style={{margin: 0, paddingTop: 10}}>{translation}</p> :
+          <Text italic style={{margin: 0, padding: "14px 0", minHeight: 44}}>{translation}</Text>
+          :
           <Skeleton title={false} paragraph={{rows: 1, width: "100%"}}/>
         }
         <Divider/>
