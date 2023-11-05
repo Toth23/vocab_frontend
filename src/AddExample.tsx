@@ -1,4 +1,4 @@
-import {Button, Flex, Input, Popover, Space, Tooltip} from "antd";
+import {Button, Flex, Form, Input, Popover, Tooltip} from "antd";
 import {PlusCircleOutlined} from "@ant-design/icons";
 import {useState} from "react";
 
@@ -8,31 +8,37 @@ interface AddExampleProps {
 }
 
 export const AddExample = ({wordId, addExample}: AddExampleProps) => {
-  const [newExampleInput, setNewExampleInput] = useState('')
   const [addExamplePopoverOpen, setAddExamplePopoverOpen] = useState(false);
+  const [form] = Form.useForm();
 
-  const addExampleContent = <Space direction={"vertical"}>
-    <Input value={newExampleInput} onChange={e => setNewExampleInput(e.target.value)}/>
-    <Flex justify={"space-between"}>
-      <Button onClick={() => {
-        setNewExampleInput('');
-        setAddExamplePopoverOpen(false);
-      }}>
-        Cancel
-      </Button>
-      <Button type={"primary"} disabled={newExampleInput.length === 0} onClick={() => {
-        addExample(wordId, newExampleInput);
-        setNewExampleInput('');
-        setAddExamplePopoverOpen(false);
-      }}>
-        Save
-      </Button>
-    </Flex>
-  </Space>
+  const handleFinish = () => {
+    addExample(wordId, form.getFieldValue("example"));
+    setAddExamplePopoverOpen(false);
+    form.resetFields();
+  }
+
+  const addExampleForm = <Form form={form} onFinish={handleFinish}>
+    <Form.Item name={"example"} required={true}>
+      <Input/>
+    </Form.Item>
+    <Form.Item>
+      <Flex justify={"space-between"}>
+        <Button onClick={() => {
+          form.resetFields();
+          setAddExamplePopoverOpen(false);
+        }}>
+          Cancel
+        </Button>
+        <Button type={"primary"} htmlType={"submit"}>
+          Save
+        </Button>
+      </Flex>
+    </Form.Item>
+  </Form>
 
   return <Popover
     title={"Add example"}
-    content={addExampleContent}
+    content={addExampleForm}
     open={addExamplePopoverOpen}
   >
     <div>
