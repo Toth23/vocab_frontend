@@ -71,7 +71,7 @@ export const WordDisplay = ({word: wordEntity, deleteWord, addExample, deleteExa
           <div>{date_added}</div>
         </Flex>
         {showTranslation ?
-          <Text italic style={{margin: 0, padding: "14px 0", minHeight: 44}}>{translation}</Text>
+          <Text italic style={{margin: "0 auto", padding: "14px 0", minHeight: 44}}>{translation}</Text>
           :
           <Skeleton title={false} paragraph={{rows: 1, width: "100%"}}/>
         }
