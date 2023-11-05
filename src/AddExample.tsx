@@ -1,6 +1,6 @@
-import {Button, Flex, Form, Input, Popover, Tooltip} from "antd";
+import {Button, Flex, Form, Input, InputRef, Popover, Tooltip} from "antd";
 import {PlusCircleOutlined} from "@ant-design/icons";
-import {useState} from "react";
+import {useRef, useState} from "react";
 
 interface AddExampleProps {
   wordId: number;
@@ -10,6 +10,9 @@ interface AddExampleProps {
 export const AddExample = ({wordId, addExample}: AddExampleProps) => {
   const [addExamplePopoverOpen, setAddExamplePopoverOpen] = useState(false);
   const [form] = Form.useForm();
+  const inputRef = useRef<InputRef>(null);
+
+  const focusInput = () => inputRef.current?.focus()
 
   const handleFinish = () => {
     addExample(wordId, form.getFieldValue("example"));
@@ -19,7 +22,7 @@ export const AddExample = ({wordId, addExample}: AddExampleProps) => {
 
   const addExampleForm = <Form form={form} onFinish={handleFinish}>
     <Form.Item name={"example"} required={true}>
-      <Input/>
+      <Input ref={inputRef}/>
     </Form.Item>
     <Form.Item>
       <Flex justify={"space-between"}>
@@ -40,6 +43,7 @@ export const AddExample = ({wordId, addExample}: AddExampleProps) => {
     title={"Add example"}
     content={addExampleForm}
     open={addExamplePopoverOpen}
+    afterOpenChange={focusInput}
   >
     <div>
       <Tooltip title={"Toggle examples"}>
