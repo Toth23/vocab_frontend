@@ -1,5 +1,6 @@
 import {Example} from './types';
-import {Empty, List, Skeleton} from "antd";
+import {Button, Empty, List, Skeleton, Tooltip} from "antd";
+import {DeleteOutlined} from "@ant-design/icons";
 
 interface ExampleDisplayProps {
   wordId: number;
@@ -11,27 +12,35 @@ interface ExampleDisplayProps {
 export const ExampleDisplay = ({wordId, examples, showExamples, deleteExample}: ExampleDisplayProps) => {
 
   const hasExamples = examples.length > 0;
+  let skeletonRows = Math.min(4, examples.length);
 
   if (!hasExamples) {
     return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={"no examples"}/>
   }
 
   return (
-    <>
-      {showExamples ?
-        <>
-          <List size="small"
-                dataSource={examples}
-                style={{height: "inherit"}}
-                renderItem={({id, example}) => <List.Item>
-                  <div>{example}</div>
-                  <button onClick={() => deleteExample(wordId, id)}>Delete example</button>
-                </List.Item>}
+    <div style={{height: "inherit"}}>
+      <div style={{maxHeight: 150, overflowY: "auto"}}>
+        {showExamples ?
+          <List
+            size="small"
+            dataSource={examples}
+            renderItem={({id, example}) => (
+              <List.Item
+                extra={(
+                  <Tooltip title={"Delete example"}>
+                    <Button onClick={() => deleteExample(wordId, id)} type={"text"} icon={<DeleteOutlined/>}/>
+                  </Tooltip>)}
+                style={{padding: 0}}
+              >
+                <div>{example}</div>
+              </List.Item>)}
           />
-        </>
-        :
-        <Skeleton title={false} paragraph={{rows: examples.length, width: "100%"}} style={{height: "inherit"}}/>
-      }
-    </>
-  )
+          :
+          <Skeleton title={false} paragraph={{rows: skeletonRows, width: "100%"}}
+                    style={{height: "inherit"}}/>
+        }
+      </div>
+    </div>
+  );
 }
