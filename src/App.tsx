@@ -3,9 +3,10 @@ import useSWR from 'swr'
 import {Word} from './types';
 import {NewWordModal} from './NewWordModal.tsx';
 import {WordDisplay} from "./WordDisplay.tsx";
-import {Button, Layout, Tooltip} from "antd";
+import {Button, Image, Layout, Tooltip} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import {useState} from "react";
+import logo from './assets/知识_white.png'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -62,7 +63,8 @@ function App() {
 
   return (
     <Layout>
-      <Layout.Header>
+      <Layout.Header style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+        <Image src={logo} height={60} width={128} style={{paddingTop: 4}} preview={false}/>
         <Tooltip title={"Add new word"}>
           <Button shape={"circle"} size={"large"} icon={<PlusOutlined/>} onClick={() => setIsNewWordModalOpen(true)}/>
         </Tooltip>
@@ -78,7 +80,8 @@ function App() {
           />
         ))}
       </div>
-      <NewWordModal addWord={addWord} isModalOpen={isNewWordModalOpen} onModalClose={() => setIsNewWordModalOpen(false)}/>
+      <NewWordModal addWord={addWord} isModalOpen={isNewWordModalOpen}
+                    onModalClose={() => setIsNewWordModalOpen(false)}/>
     </Layout>
   )
 }
