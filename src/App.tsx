@@ -1,13 +1,18 @@
 import './App.css'
 import useSWR from 'swr'
 import {Word} from './types';
-import {NewWord} from './NewWord';
+import {NewWordModal} from './NewWordModal.tsx';
 import {WordDisplay} from "./WordDisplay.tsx";
+import {Button, Layout, Tooltip} from "antd";
+import {PlusOutlined} from "@ant-design/icons";
+import {useState} from "react";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function App() {
   const {data, error, isLoading, mutate} = useSWR('http://localhost:3000/api/vocab', fetcher)
+
+  const [isNewWordModalOpen, setIsNewWordModalOpen] = useState(false);
 
   if (error) return "An error has occurred.";
   if (isLoading) return "Loading...";
@@ -56,8 +61,12 @@ function App() {
   }
 
   return (
-    <>
-      <h1>My Chinese Words</h1>
+    <Layout>
+      <Layout.Header>
+        <Tooltip title={"Add new word"}>
+          <Button shape={"circle"} size={"large"} icon={<PlusOutlined/>} onClick={() => setIsNewWordModalOpen(true)}/>
+        </Tooltip>
+      </Layout.Header>
       <div className="wordlist">
         {data.words.map((word: Word) => (
           <WordDisplay
@@ -69,8 +78,8 @@ function App() {
           />
         ))}
       </div>
-      <NewWord addWord={addWord}/>
-    </>
+      <NewWordModal addWord={addWord} isModalOpen={isNewWordModalOpen} onModalClose={() => setIsNewWordModalOpen(false)}/>
+    </Layout>
   )
 }
 
