@@ -46,7 +46,7 @@ export const AddExample = ({wordId, addExample}: AddExampleProps) => {
     afterOpenChange={focusInput}
   >
     <div>
-      <Tooltip title={"Toggle examples"}>
+      <Tooltip title={"Add example"}>
         <Button icon={<PlusCircleOutlined/>} onClick={() => setAddExamplePopoverOpen(true)} type={"text"}/>
       </Tooltip>
     </div>

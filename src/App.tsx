@@ -18,8 +18,8 @@ function App() {
   if (error) return "An error has occurred.";
   if (isLoading) return "Loading...";
 
-  const addWord = async (word: string, translation?: string, source?: string) => {
-    const payload = {word, translation: translation ?? null, source: source ?? null};
+  const addWord = async (word: string, translation?: string, source?: string, examples?: string[]) => {
+    const payload = {word, translation: translation ?? null, source: source ?? null, examples};
     const response = await fetch('http://localhost:3000/api/vocab', {
       method: 'POST',
       body: JSON.stringify(payload),
