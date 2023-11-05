@@ -1,15 +1,9 @@
 import {Word} from './types';
 import {useState} from 'react';
-import {Button, Card, Divider, Flex, Input, Popconfirm, Popover, Skeleton, Space, Tooltip, Typography} from "antd";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  EyeInvisibleOutlined,
-  EyeOutlined,
-  PlusCircleOutlined,
-  ReadOutlined
-} from '@ant-design/icons';
+import {Button, Card, Divider, Flex, Popconfirm, Skeleton, Tooltip, Typography} from "antd";
+import {DeleteOutlined, EditOutlined, EyeInvisibleOutlined, EyeOutlined, ReadOutlined} from '@ant-design/icons';
 import {ExampleDisplay} from "./ExampleDisplay.tsx";
+import {AddExample} from "./AddExample.tsx";
 
 const {Text} = Typography;
 
@@ -21,11 +15,8 @@ interface WordDisplayProps {
 }
 
 export const WordDisplay = ({word: wordEntity, deleteWord, addExample, deleteExample}: WordDisplayProps) => {
-
   const [showTranslation, setShowTranslation] = useState(false)
   const [showExamples, setShowExamples] = useState(false)
-  const [newExampleInput, setNewExampleInput] = useState('')
-  const [addExamplePopoverOpen, setAddExamplePopoverOpen] = useState(false);
 
   const toggleExamples = () => setShowExamples(current => !current);
 
@@ -67,41 +58,12 @@ export const WordDisplay = ({word: wordEntity, deleteWord, addExample, deleteExa
       type={"text"}
     />
   </Tooltip>
-  const addExampleContent = <Space direction={"vertical"}>
-    <Input value={newExampleInput} onChange={e => setNewExampleInput(e.target.value)}/>
-    <Flex justify={"space-between"}>
-      <Button onClick={() => {
-        setNewExampleInput('');
-        setAddExamplePopoverOpen(false);
-      }}>
-        Cancel
-      </Button>
-      <Button type={"primary"} disabled={newExampleInput.length === 0} onClick={() => {
-        addExample(id, newExampleInput);
-        setNewExampleInput('');
-        setAddExamplePopoverOpen(false);
-      }}>
-        Save
-      </Button>
-    </Flex>
-  </Space>
-  const addExamplePopover = <Popover
-    title={"Add example"}
-    content={addExampleContent}
-    open={addExamplePopoverOpen}
-  >
-    <div>
-      <Tooltip title={"Toggle examples"}>
-        <Button icon={<PlusCircleOutlined/>} onClick={() => setAddExamplePopoverOpen(true)} type={"text"}/>
-      </Tooltip>
-    </div>
-  </Popover>
 
   return (
     <Card title={word} extra={[editButton, deleteButton]} className="word-card" key={id} actions={[
       toggleTranslationButton,
       toggleExamplesButton,
-      addExamplePopover,
+      <AddExample wordId={id} addExample={addExample} key={"add-example"}/>,
     ]}>
       <div className="word-card-content">
         <Flex justify={"space-between"}>
