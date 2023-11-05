@@ -1,6 +1,7 @@
 .wordlist {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  justify-content: space-evenly;
 }
 
 .word-card {
