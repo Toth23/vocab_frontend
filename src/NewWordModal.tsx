@@ -1,5 +1,5 @@
-import {Button, Checkbox, Divider, Flex, Form, Input, Modal} from "antd";
-import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
+import {Button, Checkbox, Divider, Flex, Form, Input, Modal, Tooltip} from "antd";
+import {MinusCircleOutlined, PlusCircleOutlined} from "@ant-design/icons";
 
 interface NewWordProps {
   isModalOpen: boolean;
@@ -54,7 +54,6 @@ export const NewWordModal = ({addWord, isModalOpen, onModalClose}: NewWordProps)
                     {...restField}
                     name={[name]}
                     label={`Example ${index + 1}`}
-                    // labelCol={{style: {width: '100px'}, offset: 1}}
                     labelCol={{span: 6}}
                     wrapperCol={{span: 16}}
                     style={{flex: '1'}}
@@ -64,11 +63,11 @@ export const NewWordModal = ({addWord, isModalOpen, onModalClose}: NewWordProps)
                   <MinusCircleOutlined onClick={() => remove(name)} style={{flex: '0 0 32px'}}/>
                 </Flex>
               ))}
-              <Form.Item wrapperCol={{span: 8, offset: 15}}>
-                <Button onClick={() => add()} block icon={<PlusOutlined/>}>
-                  Add example
-                </Button>
-              </Form.Item>
+              <Flex align="baseline" justify={"flex-end"}>
+                <Tooltip title={"Add example"} placement={"right"}>
+                  <PlusCircleOutlined onClick={() => add()} style={{marginRight: 18}}/>
+                </Tooltip>
+              </Flex>
             </>
           )}
         </Form.List>
