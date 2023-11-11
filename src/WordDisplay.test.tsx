@@ -26,6 +26,13 @@ describe('Word Display', () => {
                         deleteExample={deleteExample}/>);
   });
 
+  afterEach(() => {
+    editWord.mockReset();
+    deleteWord.mockReset();
+    addExample.mockReset();
+    deleteExample.mockReset();
+  });
+
   it('should display the word', () => {
     expect(screen.getByText(wordEntity.word)).toBeInTheDocument();
     expect(screen.getByText(wordEntity.source)).toBeInTheDocument();
@@ -82,6 +89,23 @@ describe('Word Display', () => {
 
     // then
     expect(addExample).toHaveBeenCalledWith(wordEntity.id, "another example");
+  });
+
+  it('should go into edit mode', async () => {
+    // when
+    await userEvent.click(screen.getByLabelText("edit"));
+
+    // then
+    ["Word", "Translation", "Source"].forEach(label =>
+      expect(screen.getByLabelText(label)).toBeInTheDocument());
+    ["Cancel", "Save"].forEach(label =>
+      expect(screen.getByText(label)).toBeInTheDocument());
+
+    // when
+    await userEvent.click(screen.getByText("Save"));
+
+    // then
+    expect(editWord).toHaveBeenCalled();
   });
 
   it('should delete the word', async () => {
