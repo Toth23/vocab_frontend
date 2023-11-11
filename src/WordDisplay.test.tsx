@@ -24,12 +24,12 @@ describe('Word Display', () => {
                         editWord={editWord}
                         deleteWord={deleteWord}
                         addExample={addExample}
-                        deleteExample={deleteExample}/>)
+                        deleteExample={deleteExample}/>);
 
     // then
-    expect(screen.getByText(wordEntity.word)).toBeInTheDocument()
-    expect(screen.getByText(wordEntity.source)).toBeInTheDocument()
-    expect(screen.getByText(wordEntity.date_added)).toBeInTheDocument()
+    expect(screen.getByText(wordEntity.word)).toBeInTheDocument();
+    expect(screen.getByText(wordEntity.source)).toBeInTheDocument();
+    expect(screen.getByText(wordEntity.date_added)).toBeInTheDocument();
   });
 
   it('should display the translation after clicking on the eye icon', async () => {
@@ -41,13 +41,13 @@ describe('Word Display', () => {
                         deleteExample={deleteExample}/>)
 
     // then
-    expect(screen.queryByText(wordEntity.translation)).not.toBeInTheDocument()
+    expect(screen.queryByText(wordEntity.translation)).not.toBeInTheDocument();
 
     // when
     await userEvent.click(screen.getByLabelText("eye"));
 
     // then
-    expect(screen.getByText(wordEntity.translation)).toBeInTheDocument()
+    expect(screen.getByText(wordEntity.translation)).toBeInTheDocument();
   });
 
   it('should display the examples after clicking on the book icon', async () => {
@@ -56,15 +56,59 @@ describe('Word Display', () => {
                         editWord={editWord}
                         deleteWord={deleteWord}
                         addExample={addExample}
-                        deleteExample={deleteExample}/>)
+                        deleteExample={deleteExample}/>);
 
     // then
-    expect(screen.queryByText(exampleEntity.example)).not.toBeInTheDocument()
+    expect(screen.queryByText(exampleEntity.example)).not.toBeInTheDocument();
 
     // when
     await userEvent.click(screen.getByLabelText("read"));
 
     // then
-    expect(screen.getByText(exampleEntity.example)).toBeInTheDocument()
+    expect(screen.getByText(exampleEntity.example)).toBeInTheDocument();
+  });
+
+  it('should delete the example', async () => {
+    // when
+    render(<WordDisplay word={wordEntity}
+                        editWord={editWord}
+                        deleteWord={deleteWord}
+                        addExample={addExample}
+                        deleteExample={deleteExample}/>);
+
+    await userEvent.click(screen.getByLabelText("read"));
+
+    const deleteExampleBtn = screen.getAllByLabelText("delete")[1];
+    await userEvent.hover(deleteExampleBtn);
+
+    // then
+    expect(await screen.findByText("Delete example")).toBeInTheDocument();
+
+    // when
+    await userEvent.click(deleteExampleBtn);
+
+    // then
+    expect(deleteExample).toHaveBeenCalled();
+  });
+
+  it('should delete the word', async () => {
+    // when
+    render(<WordDisplay word={wordEntity}
+                        editWord={editWord}
+                        deleteWord={deleteWord}
+                        addExample={addExample}
+                        deleteExample={deleteExample}/>);
+
+    const deleteWordBtn = screen.getAllByLabelText("delete")[0];
+    await userEvent.click(deleteWordBtn);
+
+    // then
+    expect(await screen.findByText("Delete this word")).toBeInTheDocument();
+
+    // when
+    await userEvent.click(screen.getByText("Yes"));
+
+    // then
+    expect(deleteWord).toHaveBeenCalled();
   });
 });
