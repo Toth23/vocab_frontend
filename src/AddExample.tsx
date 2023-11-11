@@ -14,8 +14,8 @@ export const AddExample = ({wordId, addExample}: AddExampleProps) => {
 
   const focusInput = () => inputRef.current?.focus()
 
-  const handleFinish = () => {
-    addExample(wordId, form.getFieldValue("example"));
+  const handleFinish = async () => {
+    await addExample(wordId, form.getFieldValue("example"));
     setAddExamplePopoverOpen(false);
     form.resetFields();
   }

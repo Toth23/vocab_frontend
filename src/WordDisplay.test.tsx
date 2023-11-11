@@ -88,7 +88,28 @@ describe('Word Display', () => {
     await userEvent.click(deleteExampleBtn);
 
     // then
-    expect(deleteExample).toHaveBeenCalled();
+    expect(deleteExample).toHaveBeenCalledWith(wordEntity.id, exampleEntity.id);
+  });
+
+  it('should add another example', async () => {
+    // when
+    render(<WordDisplay word={wordEntity}
+                        editWord={editWord}
+                        deleteWord={deleteWord}
+                        addExample={addExample}
+                        deleteExample={deleteExample}/>);
+
+    await userEvent.click(screen.getByLabelText("plus-circle"));
+
+    // then
+    const addExampleInput = await screen.findByRole('textbox');
+
+    // when
+    await userEvent.type(addExampleInput, "another example");
+    await userEvent.click(screen.getByText("Save"));
+
+    // then
+    expect(addExample).toHaveBeenCalledWith(wordEntity.id, "another example");
   });
 
   it('should delete the word', async () => {
@@ -109,6 +130,6 @@ describe('Word Display', () => {
     await userEvent.click(screen.getByText("Yes"));
 
     // then
-    expect(deleteWord).toHaveBeenCalled();
+    expect(deleteWord).toHaveBeenCalledWith(wordEntity.id);
   });
 });
