@@ -1,23 +1,24 @@
 import {WordDisplay} from "./WordDisplay.tsx";
 import {render, screen} from "@testing-library/react";
-import {Word} from "./types.ts";
+import userEvent from '@testing-library/user-event'
 
 describe('Word Display', () => {
-  it('should display the word', () => {
-    // given
-    const wordEntity: Word = {
-      id: 123,
-      word: "my word",
-      source: "some source",
-      translation: "some translation",
-      date_added: "01.01.2023",
-      examples: [],
-    };
-    const editWord = jest.fn();
-    const deleteWord = jest.fn();
-    const addExample = jest.fn();
-    const deleteExample = jest.fn();
+  const exampleEntity = {id: 456, example: "some example"};
+  const wordEntity = {
+    id: 123,
+    word: "my word",
+    source: "some source",
+    translation: "some translation",
+    date_added: "01.01.2023",
+    examples: [exampleEntity],
+  };
 
+  const editWord = jest.fn();
+  const deleteWord = jest.fn();
+  const addExample = jest.fn();
+  const deleteExample = jest.fn();
+
+  it('should display the word', () => {
     // when
     render(<WordDisplay word={wordEntity}
                         editWord={editWord}
@@ -27,5 +28,43 @@ describe('Word Display', () => {
 
     // then
     expect(screen.getByText(wordEntity.word)).toBeInTheDocument()
+    expect(screen.getByText(wordEntity.source)).toBeInTheDocument()
+    expect(screen.getByText(wordEntity.date_added)).toBeInTheDocument()
+  });
+
+  it('should display the translation after clicking on the eye icon', async () => {
+    // when
+    render(<WordDisplay word={wordEntity}
+                        editWord={editWord}
+                        deleteWord={deleteWord}
+                        addExample={addExample}
+                        deleteExample={deleteExample}/>)
+
+    // then
+    expect(screen.queryByText(wordEntity.translation)).not.toBeInTheDocument()
+
+    // when
+    await userEvent.click(screen.getByLabelText("eye"));
+
+    // then
+    expect(screen.getByText(wordEntity.translation)).toBeInTheDocument()
+  });
+
+  it('should display the examples after clicking on the book icon', async () => {
+    // when
+    render(<WordDisplay word={wordEntity}
+                        editWord={editWord}
+                        deleteWord={deleteWord}
+                        addExample={addExample}
+                        deleteExample={deleteExample}/>)
+
+    // then
+    expect(screen.queryByText(exampleEntity.example)).not.toBeInTheDocument()
+
+    // when
+    await userEvent.click(screen.getByLabelText("read"));
+
+    // then
+    expect(screen.getByText(exampleEntity.example)).toBeInTheDocument()
   });
 });
