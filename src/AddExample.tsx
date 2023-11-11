@@ -4,7 +4,7 @@ import {useRef, useState} from "react";
 
 interface AddExampleProps {
   wordId: number;
-  addExample: (wordId: number, example: string) => void;
+  addExample: (wordId: number, example: string) => Promise<void>;
 }
 
 export const AddExample = ({wordId, addExample}: AddExampleProps) => {

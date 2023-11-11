@@ -6,7 +6,7 @@ interface ExampleDisplayProps {
   wordId: number;
   examples: Example[];
   showExamples: boolean;
-  deleteExample: (wordId: number, exampleId: number) => void;
+  deleteExample: (wordId: number, exampleId: number) => Promise<void>;
 }
 
 export const ExampleDisplay = ({wordId, examples, showExamples, deleteExample}: ExampleDisplayProps) => {

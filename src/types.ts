@@ -11,3 +11,10 @@ export interface Word {
     source?: string;
     examples: Example[];
 }
+
+export interface WordUpdate {
+    id: number;
+    word: string;
+    translation?: string;
+    source?: string;
+}

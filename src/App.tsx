@@ -1,6 +1,6 @@
 import './App.css'
 import useSWR from 'swr'
-import {Word} from './types';
+import {Word, WordUpdate} from './types';
 import {NewWordModal} from './NewWordModal.tsx';
 import {WordDisplay} from "./WordDisplay.tsx";
 import {Button, Image, Layout, Tooltip} from "antd";
@@ -30,6 +30,20 @@ function App() {
     })
     const responseJson = await response.json();
     await mutate({...data, words: [...data.words, responseJson.word]})
+  }
+  const editWord = async (wordUpdate: WordUpdate) => {
+    const payload = {word: wordUpdate.word, translation: wordUpdate.translation, source: wordUpdate.source};
+    await fetch(`http://localhost:3000/api/vocab/${wordUpdate.id}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    })
+    await mutate({
+      ...data, words: data.words.map((w: Word) => w.id === wordUpdate.id ? {...w, ...wordUpdate} : w)
+    })
   }
   const deleteWord = async (wordId: number) => {
     await fetch(`http://localhost:3000/api/vocab/${wordId}`, {method: 'DELETE'})
@@ -74,6 +88,7 @@ function App() {
           <WordDisplay
             word={word}
             key={word.id}
+            editWord={editWord}
             deleteWord={deleteWord}
             addExample={addExample}
             deleteExample={deleteExample}
