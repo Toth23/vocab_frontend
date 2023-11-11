@@ -18,29 +18,21 @@ describe('Word Display', () => {
   const addExample = jest.fn();
   const deleteExample = jest.fn();
 
-  it('should display the word', () => {
-    // when
+  beforeEach(() => {
     render(<WordDisplay word={wordEntity}
                         editWord={editWord}
                         deleteWord={deleteWord}
                         addExample={addExample}
                         deleteExample={deleteExample}/>);
+  });
 
-    // then
+  it('should display the word', () => {
     expect(screen.getByText(wordEntity.word)).toBeInTheDocument();
     expect(screen.getByText(wordEntity.source)).toBeInTheDocument();
     expect(screen.getByText(wordEntity.date_added)).toBeInTheDocument();
   });
 
   it('should display the translation after clicking on the eye icon', async () => {
-    // when
-    render(<WordDisplay word={wordEntity}
-                        editWord={editWord}
-                        deleteWord={deleteWord}
-                        addExample={addExample}
-                        deleteExample={deleteExample}/>)
-
-    // then
     expect(screen.queryByText(wordEntity.translation)).not.toBeInTheDocument();
 
     // when
@@ -51,14 +43,6 @@ describe('Word Display', () => {
   });
 
   it('should display the examples after clicking on the book icon', async () => {
-    // when
-    render(<WordDisplay word={wordEntity}
-                        editWord={editWord}
-                        deleteWord={deleteWord}
-                        addExample={addExample}
-                        deleteExample={deleteExample}/>);
-
-    // then
     expect(screen.queryByText(exampleEntity.example)).not.toBeInTheDocument();
 
     // when
@@ -70,12 +54,6 @@ describe('Word Display', () => {
 
   it('should delete the example', async () => {
     // when
-    render(<WordDisplay word={wordEntity}
-                        editWord={editWord}
-                        deleteWord={deleteWord}
-                        addExample={addExample}
-                        deleteExample={deleteExample}/>);
-
     await userEvent.click(screen.getByLabelText("read"));
 
     const deleteExampleBtn = screen.getAllByLabelText("delete")[1];
@@ -93,12 +71,6 @@ describe('Word Display', () => {
 
   it('should add another example', async () => {
     // when
-    render(<WordDisplay word={wordEntity}
-                        editWord={editWord}
-                        deleteWord={deleteWord}
-                        addExample={addExample}
-                        deleteExample={deleteExample}/>);
-
     await userEvent.click(screen.getByLabelText("plus-circle"));
 
     // then
@@ -114,12 +86,6 @@ describe('Word Display', () => {
 
   it('should delete the word', async () => {
     // when
-    render(<WordDisplay word={wordEntity}
-                        editWord={editWord}
-                        deleteWord={deleteWord}
-                        addExample={addExample}
-                        deleteExample={deleteExample}/>);
-
     const deleteWordBtn = screen.getAllByLabelText("delete")[0];
     await userEvent.click(deleteWordBtn);
 
