@@ -7,7 +7,7 @@ import {Button, Image, Layout, Tooltip} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import {useState} from "react";
 import logo from './assets/知识_white.png'
-import {getBackendCalls} from "./getBackendCalls.ts";
+import {baseUrl, getBackendCalls} from "./getBackendCalls.ts";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -17,7 +17,7 @@ function App() {
     error,
     isLoading,
     mutate
-  } = useSWR<AppState>('http://localhost:3000/api/vocab', fetcher, {fallbackData: {words: []}})
+  } = useSWR<AppState>(`${baseUrl}/vocab`, fetcher)
 
   const [isNewWordModalOpen, setIsNewWordModalOpen] = useState(false);
 
