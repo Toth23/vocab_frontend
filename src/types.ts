@@ -12,6 +12,10 @@ export interface Word {
     examples: Example[];
 }
 
+export interface AppState {
+    words: Word[];
+}
+
 export interface WordUpdate {
     id: number;
     word: string;

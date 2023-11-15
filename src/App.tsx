@@ -1,79 +1,30 @@
 import './App.css'
 import useSWR from 'swr'
-import {Word, WordUpdate} from './types';
+import {AppState, Word} from './types';
 import {NewWordModal} from './NewWordModal.tsx';
 import {WordDisplay} from "./WordDisplay.tsx";
 import {Button, Image, Layout, Tooltip} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import {useState} from "react";
 import logo from './assets/知识_white.png'
+import {getBackendCalls} from "./getBackendCalls.ts";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function App() {
-  const {data, error, isLoading, mutate} = useSWR('http://localhost:3000/api/vocab', fetcher)
+  const {
+    data,
+    error,
+    isLoading,
+    mutate
+  } = useSWR<AppState>('http://localhost:3000/api/vocab', fetcher, {fallbackData: {words: []}})
 
   const [isNewWordModalOpen, setIsNewWordModalOpen] = useState(false);
 
-  if (error) return "An error has occurred.";
   if (isLoading) return "Loading...";
+  if (error || !data) return "An error has occurred.";
 
-  const addWord = async (word: string, translation?: string, source?: string, examples?: string[]) => {
-    const payload = {word, translation: translation ?? null, source: source ?? null, examples};
-    const response = await fetch('http://localhost:3000/api/vocab', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    })
-    const responseJson = await response.json();
-    await mutate({...data, words: [...data.words, responseJson.word]})
-  }
-  const editWord = async (wordUpdate: WordUpdate) => {
-    const payload = {word: wordUpdate.word, translation: wordUpdate.translation, source: wordUpdate.source};
-    await fetch(`http://localhost:3000/api/vocab/${wordUpdate.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(payload),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    })
-    await mutate({
-      ...data, words: data.words.map((w: Word) => w.id === wordUpdate.id ? {...w, ...wordUpdate} : w)
-    })
-  }
-  const deleteWord = async (wordId: number) => {
-    await fetch(`http://localhost:3000/api/vocab/${wordId}`, {method: 'DELETE'})
-    await mutate({...data, words: data.words.filter((w: Word) => w.id !== wordId)})
-  }
-  const addExample = async (wordId: number, example: string) => {
-    const payload = {example};
-    const response = await fetch(`http://localhost:3000/api/vocab/${wordId}/examples`, {
-      method: 'POST',
-      body: JSON.stringify(payload),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    })
-    const responseJson = await response.json();
-    await mutate({
-      ...data, words: data.words.map((w: Word) => w.id === wordId ? w :
-        {...w, examples: [...w.examples, responseJson]})
-    })
-  }
-  const deleteExample = async (wordId: number, exampleId: number) => {
-    await fetch(`http://localhost:3000/api/vocab/${wordId}/examples/${exampleId}`, {
-      method: 'DELETE',
-    })
-    await mutate({
-      ...data, words: data.words.map((w: Word) => w.id === wordId ? w :
-        {...w, examples: w.examples.filter(e => e.id !== exampleId)})
-    })
-  }
+  const {addWord, editWord, deleteWord, addExample, deleteExample} = getBackendCalls(data, mutate);
 
   return (
     <Layout>
