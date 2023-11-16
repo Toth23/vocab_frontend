@@ -9,6 +9,11 @@ const config: Config = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
+  setupFiles: ["<rootDir>/src/jest.polyfills.js"],
+  moduleNameMapper: {
+    "\\.(jpg|jpeg|png|webp|svg)$": "<rootDir>/src/fileMock.ts",
+    '\\.(css|less)$': '<rootDir>/src/fileMock.ts',
+  }
 };
 
 export default config;
