@@ -13,10 +13,10 @@ describe('Word Display', () => {
     examples: [exampleEntity],
   };
 
-  const editWord = jest.fn();
-  const deleteWord = jest.fn();
-  const addExample = jest.fn();
-  const deleteExample = jest.fn();
+  const editWord = vi.fn();
+  const deleteWord = vi.fn();
+  const addExample = vi.fn();
+  const deleteExample = vi.fn();
 
   beforeEach(() => {
     render(<WordDisplay word={wordEntity}

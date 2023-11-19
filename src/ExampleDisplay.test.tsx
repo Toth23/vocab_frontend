@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event";
 describe('Example Display', () => {
   const wordId = 123;
   const examples = [{example: "ex 1", id: 1}, {example: "ex 2", id: 2}];
-  const deleteExample = jest.fn();
+  const deleteExample = vi.fn();
 
   afterEach(() => {
     deleteExample.mockReset();

@@ -11,8 +11,8 @@ describe('Edit Word', () => {
     date_added: "01.01.2023",
     examples: [],
   };
-  const save = jest.fn();
-  const reset = jest.fn();
+  const save = vi.fn();
+  const reset = vi.fn();
 
   afterEach(() => {
     save.mockReset();
