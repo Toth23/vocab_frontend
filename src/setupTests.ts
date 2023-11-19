@@ -14,3 +14,6 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: vi.fn(),
   })),
 });
+// avoid an error log in NewWordModal.test.tsx
+const { getComputedStyle } = window;
+window.getComputedStyle = (elt) => getComputedStyle(elt);

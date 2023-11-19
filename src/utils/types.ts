@@ -22,3 +22,10 @@ export interface WordUpdate {
     translation?: string;
     source?: string;
 }
+
+export interface WordCreation {
+    word: string;
+    translation?: string;
+    source?: string;
+    examples?: string[];
+}

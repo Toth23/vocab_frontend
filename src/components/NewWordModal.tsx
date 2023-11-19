@@ -1,13 +1,14 @@
 import {Button, Checkbox, Divider, Flex, Form, Input, Modal, Tooltip} from "antd";
 import {MinusCircleOutlined, PlusCircleOutlined} from "@ant-design/icons";
+import {WordCreation} from "../utils/types.ts";
 
 interface NewWordProps {
   isModalOpen: boolean;
-  addWord: (word: string, translation?: string, source?: string, examples?: string[]) => Promise<void>;
-  onModalClose: () => void;
+  addWord: (wordCreation: WordCreation) => Promise<void>;
+  closeModal: () => void;
 }
 
-export const NewWordModal = ({addWord, isModalOpen, onModalClose}: NewWordProps) => {
+export const NewWordModal = ({addWord, isModalOpen, closeModal}: NewWordProps) => {
   const [form] = Form.useForm();
 
   const handleFinish = async () => {
@@ -16,19 +17,19 @@ export const NewWordModal = ({addWord, isModalOpen, onModalClose}: NewWordProps)
     const source = form.getFieldValue("source");
     const examples = form.getFieldValue("examples").filter((ex: string) => ex.trim().length > 0);
 
-    await addWord(word, translation, source, examples);
+    await addWord({word, translation, source, examples});
 
     const createAnother = form.getFieldValue("another");
     if (createAnother) {
       form.resetFields(["word", "translation", "examples"])
     } else {
       form.resetFields();
-      onModalClose();
+      closeModal();
     }
   }
 
   return (
-    <Modal title="Add new word" open={isModalOpen} footer={null} onCancel={onModalClose} maskClosable={false}>
+    <Modal title="Add new word" open={isModalOpen} footer={null} onCancel={closeModal} maskClosable={false}>
       <Form form={form} onFinish={handleFinish} labelCol={{span: 8}} wrapperCol={{span: 12}}>
         <Divider/>
         <Form.Item name={"word"} label={"Word"} required={true}
@@ -84,7 +85,7 @@ export const NewWordModal = ({addWord, isModalOpen, onModalClose}: NewWordProps)
           <Flex justify={"space-between"} style={{padding: 20}}>
             <Button onClick={() => {
               form.resetFields();
-              onModalClose();
+              closeModal();
             }}>
               Cancel
             </Button>

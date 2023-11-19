@@ -47,7 +47,7 @@ function App() {
         ))}
       </div>
       <NewWordModal addWord={addWord} isModalOpen={isNewWordModalOpen}
-                    onModalClose={() => setIsNewWordModalOpen(false)}/>
+                    closeModal={() => setIsNewWordModalOpen(false)}/>
     </Layout>
   )
 }

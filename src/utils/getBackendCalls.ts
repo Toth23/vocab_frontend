@@ -1,5 +1,5 @@
 import {KeyedMutator} from "swr/_internal";
-import {AppState, Word, WordUpdate} from "./types.ts";
+import {AppState, Word, WordCreation, WordUpdate} from "./types.ts";
 
 export const baseUrl = 'http://localhost:3000/api'
 const headers = {
@@ -11,9 +11,8 @@ const backendCall = (path: string, method = 'GET', body: string | null = null) =
   fetch(`${baseUrl}/${path}`, {method, headers, body});
 
 export const getBackendCalls = (data: AppState, mutate: KeyedMutator<AppState>) => {
-  const addWord = async (word: string, translation?: string, source?: string, examples?: string[]) => {
-    const payload = {word, translation: translation ?? null, source: source ?? null, examples};
-    const response = await backendCall('vocab', 'POST', JSON.stringify(payload));
+  const addWord = async (wordCreation: WordCreation) => {
+    const response = await backendCall('vocab', 'POST', JSON.stringify(wordCreation));
     const responseJson = await response.json();
     await mutate({...data, words: [...data.words, responseJson.word]});
   }
