@@ -1,4 +1,4 @@
-import {Word, WordUpdate} from "./types.ts";
+import {Word, WordUpdate} from "../utils/types.ts";
 import {Button, Flex, Form, Input} from "antd";
 
 

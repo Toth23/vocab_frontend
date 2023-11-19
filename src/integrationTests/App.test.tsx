@@ -1,7 +1,7 @@
 import {render, screen, waitFor} from "@testing-library/react";
-import App from "./App.tsx";
+import App from "../components/App.tsx";
 import {http, HttpResponse} from "msw";
-import {baseUrl} from "./getBackendCalls.ts";
+import {baseUrl} from "../utils/getBackendCalls.ts";
 import {setupServer} from "msw/node";
 
 describe('The App', () => {

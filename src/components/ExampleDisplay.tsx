@@ -1,4 +1,4 @@
-import {Example} from './types';
+import {Example} from '../utils/types.ts';
 import {Button, Empty, List, Skeleton, Tooltip} from "antd";
 import {DeleteOutlined} from "@ant-design/icons";
 

@@ -1,4 +1,4 @@
-import {Word, WordUpdate} from './types';
+import {Word, WordUpdate} from '../utils/types.ts';
 import {useState} from 'react';
 import {Button, Card, Divider, Flex, Popconfirm, Skeleton, Tooltip, Typography} from "antd";
 import {DeleteOutlined, EditOutlined, EyeInvisibleOutlined, EyeOutlined, ReadOutlined} from '@ant-design/icons';

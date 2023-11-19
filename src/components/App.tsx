@@ -1,13 +1,13 @@
-import './App.css'
+import '../styles/App.css'
 import useSWR from 'swr'
-import {AppState, Word} from './types';
+import {AppState, Word} from '../utils/types.ts';
 import {NewWordModal} from './NewWordModal.tsx';
 import {WordDisplay} from "./WordDisplay.tsx";
 import {Button, Image, Layout, Tooltip} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import {useState} from "react";
-import logo from './assets/知识_white.png'
-import {baseUrl, getBackendCalls} from "./getBackendCalls.ts";
+import logo from '../assets/知识_white.png'
+import {baseUrl, getBackendCalls} from "../utils/getBackendCalls.ts";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
