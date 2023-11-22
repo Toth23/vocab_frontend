@@ -12,7 +12,7 @@ interface ExampleDisplayProps {
 export const ExampleDisplay = ({wordId, examples, showExamples, deleteExample}: ExampleDisplayProps) => {
 
   const hasExamples = examples.length > 0;
-  let skeletonRows = Math.min(4, examples.length);
+  const skeletonRows = Math.min(4, examples.length);
 
   if (!hasExamples) {
     return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={"no examples"}/>
