@@ -32,7 +32,7 @@ export const getBackendCalls = (data: AppState, mutate: KeyedMutator<AppState>) 
     const response = await backendCall(`vocab/${wordId}/examples`, 'POST', JSON.stringify(payload));
     const responseJson = await response.json();
     await mutate({
-      ...data, words: data.words.map((w: Word) => w.id === wordId ? w :
+      ...data, words: data.words.map((w: Word) => w.id !== wordId ? w :
         {...w, examples: [...w.examples, responseJson]})
     });
   }
