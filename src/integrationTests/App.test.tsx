@@ -73,8 +73,8 @@ describe('The App', () => {
     // then
     words.forEach(w => {
         expect(screen.getByText(w.word)).toBeInTheDocument();
-        expect(screen.getByText(w.source!!)).toBeInTheDocument();
-        expect(screen.queryByText(w.translation!!)).not.toBeInTheDocument();
+        expect(screen.getByText(w.source!)).toBeInTheDocument();
+        expect(screen.queryByText(w.translation!)).not.toBeInTheDocument();
       }
     );
 
@@ -86,7 +86,7 @@ describe('The App', () => {
 
     // then
     words.forEach(w => {
-        expect(screen.getByText(w.translation!!)).toBeInTheDocument();
+        expect(screen.getByText(w.translation!)).toBeInTheDocument();
       }
     );
 
@@ -159,7 +159,7 @@ describe('The App', () => {
       expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
     });
 
-    let deleteIcons = screen.getAllByLabelText('delete');
+    const deleteIcons = screen.getAllByLabelText('delete');
     await userEvent.click(deleteIcons[0]);
     await userEvent.click(screen.getByText("Yes"));
 

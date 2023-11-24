@@ -22,7 +22,7 @@ export const WordDisplay = ({word: wordEntity, editWord, deleteWord, addExample,
   const [editMode, setEditMode] = useState(false)
 
   const toggleExamples = () => setShowExamples(current => !current);
-  let saveEdit = async (wordUpdate: WordUpdate) => {
+  const saveEdit = async (wordUpdate: WordUpdate) => {
     await editWord(wordUpdate);
     setEditMode(false);
   };
