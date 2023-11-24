@@ -1,9 +1,9 @@
-import {WordDisplay} from "./WordDisplay.tsx";
-import {render, screen} from "@testing-library/react";
-import userEvent from '@testing-library/user-event'
+import { WordDisplay } from "./WordDisplay.tsx";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-describe('Word Display', () => {
-  const exampleEntity = {id: 456, example: "some example"};
+describe("Word Display", () => {
+  const exampleEntity = { id: 456, example: "some example" };
   const wordEntity = {
     id: 123,
     word: "my word",
@@ -19,11 +19,15 @@ describe('Word Display', () => {
   const deleteExample = vi.fn();
 
   beforeEach(() => {
-    render(<WordDisplay word={wordEntity}
-                        editWord={editWord}
-                        deleteWord={deleteWord}
-                        addExample={addExample}
-                        deleteExample={deleteExample}/>);
+    render(
+      <WordDisplay
+        word={wordEntity}
+        editWord={editWord}
+        deleteWord={deleteWord}
+        addExample={addExample}
+        deleteExample={deleteExample}
+      />,
+    );
   });
 
   afterEach(() => {
@@ -33,13 +37,13 @@ describe('Word Display', () => {
     deleteExample.mockReset();
   });
 
-  it('should display the word', () => {
+  it("should display the word", () => {
     expect(screen.getByText(wordEntity.word)).toBeInTheDocument();
     expect(screen.getByText(wordEntity.source)).toBeInTheDocument();
     expect(screen.getByText(wordEntity.date_added)).toBeInTheDocument();
   });
 
-  it('should display the translation after clicking on the eye icon', async () => {
+  it("should display the translation after clicking on the eye icon", async () => {
     expect(screen.queryByText(wordEntity.translation)).not.toBeInTheDocument();
 
     // when
@@ -49,7 +53,7 @@ describe('Word Display', () => {
     expect(screen.getByText(wordEntity.translation)).toBeInTheDocument();
   });
 
-  it('should display the examples after clicking on the book icon', async () => {
+  it("should display the examples after clicking on the book icon", async () => {
     expect(screen.queryByText(exampleEntity.example)).not.toBeInTheDocument();
 
     // when
@@ -59,7 +63,7 @@ describe('Word Display', () => {
     expect(screen.getByText(exampleEntity.example)).toBeInTheDocument();
   });
 
-  it('should delete the example', async () => {
+  it("should delete the example", async () => {
     // when
     await userEvent.click(screen.getByLabelText("read"));
 
@@ -76,12 +80,12 @@ describe('Word Display', () => {
     expect(deleteExample).toHaveBeenCalledWith(wordEntity.id, exampleEntity.id);
   });
 
-  it('should add another example', async () => {
+  it("should add another example", async () => {
     // when
     await userEvent.click(screen.getByLabelText("plus-circle"));
 
     // then
-    const addExampleInput = await screen.findByRole('textbox');
+    const addExampleInput = await screen.findByRole("textbox");
 
     // when
     await userEvent.type(addExampleInput, "another example");
@@ -91,15 +95,17 @@ describe('Word Display', () => {
     expect(addExample).toHaveBeenCalledWith(wordEntity.id, "another example");
   });
 
-  it('should go into edit mode', async () => {
+  it("should go into edit mode", async () => {
     // when
     await userEvent.click(screen.getByLabelText("edit"));
 
     // then
-    ["Word", "Translation", "Source"].forEach(label =>
-      expect(screen.getByLabelText(label)).toBeInTheDocument());
-    ["Cancel", "Save"].forEach(label =>
-      expect(screen.getByText(label)).toBeInTheDocument());
+    ["Word", "Translation", "Source"].forEach((label) =>
+      expect(screen.getByLabelText(label)).toBeInTheDocument(),
+    );
+    ["Cancel", "Save"].forEach((label) =>
+      expect(screen.getByText(label)).toBeInTheDocument(),
+    );
 
     // when
     await userEvent.click(screen.getByText("Save"));
@@ -108,7 +114,7 @@ describe('Word Display', () => {
     expect(editWord).toHaveBeenCalled();
   });
 
-  it('should delete the word', async () => {
+  it("should delete the word", async () => {
     // when
     const deleteWordBtn = screen.getAllByLabelText("delete")[0];
     await userEvent.click(deleteWordBtn);

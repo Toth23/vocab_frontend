@@ -1,8 +1,8 @@
-import {render, screen} from "@testing-library/react";
-import {EditWord} from "./EditWord.tsx";
+import { render, screen } from "@testing-library/react";
+import { EditWord } from "./EditWord.tsx";
 import userEvent from "@testing-library/user-event";
 
-describe('Edit Word', () => {
+describe("Edit Word", () => {
   const wordEntity = {
     id: 123,
     word: "word",
@@ -19,14 +19,14 @@ describe('Edit Word', () => {
     reset.mockReset();
   });
 
-  it('should edit and save the word', async () => {
+  it("should edit and save the word", async () => {
     // given
-    render(<EditWord save={save} reset={reset} wordEntity={wordEntity}/>);
+    render(<EditWord save={save} reset={reset} wordEntity={wordEntity} />);
 
     // when
-    const wordField = screen.getByLabelText('Word');
-    const translationField = screen.getByLabelText('Translation');
-    const sourceField = screen.getByLabelText('Source');
+    const wordField = screen.getByLabelText("Word");
+    const translationField = screen.getByLabelText("Translation");
+    const sourceField = screen.getByLabelText("Source");
 
     await userEvent.type(wordField, " changed");
     await userEvent.type(translationField, " changed");
@@ -44,9 +44,9 @@ describe('Edit Word', () => {
     expect(save).toHaveBeenCalledWith(expectedWordUpdate);
   });
 
-  it('should cancel', async () => {
+  it("should cancel", async () => {
     // given
-    render(<EditWord save={save} reset={reset} wordEntity={wordEntity}/>);
+    render(<EditWord save={save} reset={reset} wordEntity={wordEntity} />);
 
     // when
     await userEvent.click(screen.getByText("Cancel"));
