@@ -9,7 +9,7 @@ describe("Edit Word", () => {
     word: "word",
     source: "source",
     translation: "translation",
-    date_added: "01.01.2023",
+    date_added: "2023-01-01T15:30:00+00:00",
     examples: [],
   };
   const save = vi.fn();

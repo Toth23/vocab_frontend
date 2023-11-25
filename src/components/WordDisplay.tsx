@@ -96,7 +96,7 @@ export const WordDisplay = ({
     <>
       <Flex justify={"space-between"}>
         <div>{source}</div>
-        <div>{date_added}</div>
+        <div>{new Date(date_added).toLocaleDateString()}</div>
       </Flex>
       {showTranslation ? (
         <Text

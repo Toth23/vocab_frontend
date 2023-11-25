@@ -10,7 +10,7 @@ describe("Word Display", () => {
     word: "my word",
     source: "some source",
     translation: "some translation",
-    date_added: "01.01.2023",
+    date_added: "2023-01-01T15:30:00+00:00",
     examples: [exampleEntity],
   };
 
@@ -41,7 +41,7 @@ describe("Word Display", () => {
   it("should display the word", () => {
     expect(screen.getByText(wordEntity.word)).toBeInTheDocument();
     expect(screen.getByText(wordEntity.source)).toBeInTheDocument();
-    expect(screen.getByText(wordEntity.date_added)).toBeInTheDocument();
+    expect(screen.getByText(new Date(wordEntity.date_added).toLocaleDateString())).toBeInTheDocument();
   });
 
   it("should display the translation after clicking on the eye icon", async () => {

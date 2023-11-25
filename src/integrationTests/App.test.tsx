@@ -14,7 +14,7 @@ describe("The App", () => {
       word: "word 1",
       source: "source 1",
       translation: "tr 1",
-      date_added: "01.01.2023",
+      date_added: "2023-01-01T15:30:00+00:00",
       examples: [{ id: uuid(), example: "ex 1" }],
     },
     {
@@ -22,7 +22,7 @@ describe("The App", () => {
       word: "word 2",
       source: "source 2",
       translation: "tr 2",
-      date_added: "01.01.2023",
+      date_added: "2023-01-01T15:30:00+00:00",
       examples: [
         { id: uuid(), example: "ex 2" },
         { id: uuid(), example: "ex 3" },
@@ -38,7 +38,7 @@ describe("The App", () => {
       const newWordId = uuid();
       const newWord: Word = {
         id: newWordId,
-        date_added: "01.01.2023",
+        date_added: "2023-01-01T15:30:00+00:00",
         ...requestJson,
         examples: [],
       };
