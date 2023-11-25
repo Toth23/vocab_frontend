@@ -1,7 +1,7 @@
 import { KeyedMutator } from "swr/_internal";
 import { AppState, Word, WordCreation, WordUpdate } from "./types.ts";
 
-export const baseUrl = "http://localhost:3000/api";
+export const baseUrl = import.meta.env.VITE_API_URL ?? "http://localhost:3000/api";
 const headers = {
   Accept: "application/json",
   "Content-Type": "application/json",
