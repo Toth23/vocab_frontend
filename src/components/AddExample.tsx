@@ -3,8 +3,8 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 import { useRef, useState } from "react";
 
 interface AddExampleProps {
-  wordId: number;
-  addExample: (wordId: number, example: string) => Promise<void>;
+  wordId: string;
+  addExample: (wordId: string, example: string) => Promise<void>;
 }
 
 export const AddExample = ({ wordId, addExample }: AddExampleProps) => {

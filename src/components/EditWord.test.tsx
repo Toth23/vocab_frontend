@@ -1,10 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { EditWord } from "./EditWord.tsx";
 import userEvent from "@testing-library/user-event";
+import { v4 as uuid } from "uuid";
 
 describe("Edit Word", () => {
   const wordEntity = {
-    id: 123,
+    id: uuid(),
     word: "word",
     source: "source",
     translation: "translation",

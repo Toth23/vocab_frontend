@@ -5,26 +5,27 @@ import { baseUrl } from "../utils/getBackendCalls.ts";
 import { setupServer } from "msw/node";
 import userEvent from "@testing-library/user-event";
 import { Word, WordCreation } from "../utils/types.ts";
+import { v4 as uuid } from "uuid";
 
 describe("The App", () => {
   let words: Word[] = [
     {
-      id: 1,
+      id: uuid(),
       word: "word 1",
       source: "source 1",
       translation: "tr 1",
       date_added: "01.01.2023",
-      examples: [{ id: 1, example: "ex 1" }],
+      examples: [{ id: uuid(), example: "ex 1" }],
     },
     {
-      id: 2,
+      id: uuid(),
       word: "word 2",
       source: "source 2",
       translation: "tr 2",
       date_added: "01.01.2023",
       examples: [
-        { id: 2, example: "ex 2" },
-        { id: 3, example: "ex 3" },
+        { id: uuid(), example: "ex 2" },
+        { id: uuid(), example: "ex 3" },
       ],
     },
   ];
@@ -34,7 +35,7 @@ describe("The App", () => {
     }),
     http.post(`${baseUrl}/vocab`, async ({ request }) => {
       const requestJson = (await request.json()) as WordCreation;
-      const newWordId = Math.max(...words.map((w) => w.id)) + 1;
+      const newWordId = uuid();
       const newWord: Word = {
         id: newWordId,
         date_added: "01.01.2023",
@@ -52,8 +53,7 @@ describe("The App", () => {
       `${baseUrl}/vocab/:wordId/examples`,
       async ({ params, request }) => {
         const { example } = (await request.json()) as { example: string };
-        const newExampleId =
-          Math.max(...words.flatMap((w) => w.examples.map((ex) => ex.id))) + 1;
+        const newExampleId = uuid();
         const newExample = { id: newExampleId, example };
         words = words.map((w) =>
           w.id.toString() !== params.wordId

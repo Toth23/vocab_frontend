@@ -3,10 +3,10 @@ import { Button, Empty, List, Skeleton, Tooltip } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 
 interface ExampleDisplayProps {
-  wordId: number;
+  wordId: string;
   examples: Example[];
   showExamples: boolean;
-  deleteExample: (wordId: number, exampleId: number) => Promise<void>;
+  deleteExample: (wordId: string, exampleId: string) => Promise<void>;
 }
 
 export const ExampleDisplay = ({

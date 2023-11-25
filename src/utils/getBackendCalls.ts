@@ -40,14 +40,14 @@ export const getBackendCalls = (
       ),
     });
   };
-  const deleteWord = async (wordId: number) => {
+  const deleteWord = async (wordId: string) => {
     await backendCall(`vocab/${wordId}`, "DELETE");
     await mutate({
       ...data,
       words: data.words.filter((w: Word) => w.id !== wordId),
     });
   };
-  const addExample = async (wordId: number, example: string) => {
+  const addExample = async (wordId: string, example: string) => {
     const payload = { example };
     const response = await backendCall(
       `vocab/${wordId}/examples`,
@@ -62,7 +62,7 @@ export const getBackendCalls = (
       ),
     });
   };
-  const deleteExample = async (wordId: number, exampleId: number) => {
+  const deleteExample = async (wordId: string, exampleId: string) => {
     await backendCall(`vocab/${wordId}/examples/${exampleId}`, "DELETE");
     await mutate({
       ...data,

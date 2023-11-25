@@ -1,10 +1,10 @@
 export interface Example {
-  id: number;
+  id: string;
   example: string;
 }
 
 export interface Word {
-  id: number;
+  id: string;
   word: string;
   date_added: string;
   translation?: string;
@@ -17,7 +17,7 @@ export interface AppState {
 }
 
 export interface WordUpdate {
-  id: number;
+  id: string;
   word: string;
   translation?: string;
   source?: string;

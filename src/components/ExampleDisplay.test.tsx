@@ -1,12 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import { ExampleDisplay } from "./ExampleDisplay.tsx";
 import userEvent from "@testing-library/user-event";
+import { v4 as uuid } from 'uuid';
 
 describe("Example Display", () => {
-  const wordId = 123;
+  const wordId = uuid();
   const examples = [
-    { example: "ex 1", id: 1 },
-    { example: "ex 2", id: 2 },
+    { example: "ex 1", id: uuid() },
+    { example: "ex 2", id: uuid() },
   ];
   const deleteExample = vi.fn();
 
@@ -81,6 +82,6 @@ describe("Example Display", () => {
     await userEvent.click(deleteExampleBtns[0]);
 
     // then
-    expect(deleteExample).toHaveBeenCalledWith(wordId, 1);
+    expect(deleteExample).toHaveBeenCalledWith(wordId, examples[0].id);
   });
 });

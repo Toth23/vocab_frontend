@@ -26,9 +26,9 @@ const { Text } = Typography;
 interface WordDisplayProps {
   word: Word;
   editWord: (wordUpdate: WordUpdate) => Promise<void>;
-  deleteWord: (wordId: number) => Promise<void>;
-  addExample: (wordId: number, example: string) => Promise<void>;
-  deleteExample: (wordId: number, exampleId: number) => Promise<void>;
+  deleteWord: (wordId: string) => Promise<void>;
+  addExample: (wordId: string, example: string) => Promise<void>;
+  deleteExample: (wordId: string, exampleId: string) => Promise<void>;
 }
 
 export const WordDisplay = ({

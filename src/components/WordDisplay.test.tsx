@@ -1,11 +1,12 @@
 import { WordDisplay } from "./WordDisplay.tsx";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { v4 as uuid } from "uuid";
 
 describe("Word Display", () => {
-  const exampleEntity = { id: 456, example: "some example" };
+  const exampleEntity = { id: uuid(), example: "some example" };
   const wordEntity = {
-    id: 123,
+    id: uuid(),
     word: "my word",
     source: "some source",
     translation: "some translation",
