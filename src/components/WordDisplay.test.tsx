@@ -41,7 +41,9 @@ describe("Word Display", () => {
   it("should display the word", () => {
     expect(screen.getByText(wordEntity.word)).toBeInTheDocument();
     expect(screen.getByText(wordEntity.source)).toBeInTheDocument();
-    expect(screen.getByText(new Date(wordEntity.date_added).toLocaleDateString())).toBeInTheDocument();
+    expect(
+      screen.getByText(new Date(wordEntity.date_added).toLocaleDateString()),
+    ).toBeInTheDocument();
   });
 
   it("should display the translation after clicking on the eye icon", async () => {

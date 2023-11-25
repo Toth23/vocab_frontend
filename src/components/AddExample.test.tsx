@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { AddExample } from "./AddExample.tsx";
 import userEvent from "@testing-library/user-event";
-import {v4 as uuid} from "uuid";
+import { v4 as uuid } from "uuid";
 
 describe("Edit Word", () => {
   const wordId = uuid();
