@@ -4,16 +4,19 @@ import { AppState, Word, WordCreation, WordUpdate } from "./types.ts";
 export const baseUrl =
   import.meta.env.VITE_API_URL ?? "http://localhost:3000/api";
 
-const headers = {
+export const customUserIdHeader = "x-user-identifier";
+
+const getHeaders = () => ({
   Accept: "application/json",
   "Content-Type": "application/json",
-};
+  [customUserIdHeader]: localStorage.getItem("user-id") ?? "",
+});
 
 const backendCall = (
   path: string,
   method = "GET",
   body: string | null = null,
-) => fetch(`${baseUrl}/${path}`, { method, headers, body });
+) => fetch(`${baseUrl}/${path}`, { method, headers: getHeaders(), body });
 
 export const getBackendCalls = (
   data: AppState,

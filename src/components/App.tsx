@@ -1,19 +1,33 @@
 import "../styles/App.css";
 import useSWR from "swr";
-import { AppState, Word } from "../utils/types.ts";
+import { Word } from "../utils/types.ts";
 import { NewWordModal } from "./NewWordModal.tsx";
 import { WordDisplay } from "./WordDisplay.tsx";
 import { Button, Image, Layout, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import logo from "../assets/知识_white.png";
-import { baseUrl, getBackendCalls } from "../utils/getBackendCalls.ts";
+import {
+  baseUrl,
+  customUserIdHeader,
+  getBackendCalls,
+} from "../utils/getBackendCalls.ts";
+import { v4 as uuid } from "uuid";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = ({ url, userId }: { url: string; userId: string }) =>
+  fetch(url, { headers: { [customUserIdHeader]: userId } }).then((res) =>
+    res.json(),
+  );
 
 function App() {
-  const { data, error, isLoading, mutate } = useSWR<AppState>(
-    `${baseUrl}/vocab`,
+  let userId = localStorage.getItem("user-id");
+  if (!userId) {
+    userId = uuid();
+    localStorage.setItem("user-id", userId);
+  }
+
+  const { data, error, isLoading, mutate } = useSWR(
+    { url: `${baseUrl}/vocab`, userId },
     fetcher,
   );
 

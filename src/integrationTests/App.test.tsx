@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import App from "../components/App.tsx";
 import { http, HttpResponse } from "msw";
-import { baseUrl } from "../utils/getBackendCalls.ts";
+import { baseUrl, customUserIdHeader } from "../utils/getBackendCalls.ts";
 import { setupServer } from "msw/node";
 import userEvent from "@testing-library/user-event";
 import { Word, WordCreation } from "../utils/types.ts";
@@ -30,37 +30,45 @@ describe("The App", () => {
     },
   ];
   const server = setupServer(
-    http.get(`${baseUrl}/vocab`, () => {
-      return HttpResponse.json({ words });
+    http.get(`${baseUrl}/vocab`, ({ request }) => {
+      if (request.headers.has(customUserIdHeader)) {
+        return HttpResponse.json({ words });
+      }
     }),
     http.post(`${baseUrl}/vocab`, async ({ request }) => {
-      const requestJson = (await request.json()) as WordCreation;
-      const newWordId = uuid();
-      const newWord: Word = {
-        id: newWordId,
-        date_added: "2023-01-01T15:30:00+00:00",
-        ...requestJson,
-        examples: [],
-      };
-      words.push(newWord);
-      return HttpResponse.json({ word: newWord });
+      if (request.headers.has(customUserIdHeader)) {
+        const requestJson = (await request.json()) as WordCreation;
+        const newWordId = uuid();
+        const newWord: Word = {
+          id: newWordId,
+          date_added: "2023-01-01T15:30:00+00:00",
+          ...requestJson,
+          examples: [],
+        };
+        words.push(newWord);
+        return HttpResponse.json({ word: newWord });
+      }
     }),
-    http.delete(`${baseUrl}/vocab/:id`, async ({ params }) => {
-      words = words.filter((w) => w.id.toString() !== params.id);
-      return HttpResponse.json();
+    http.delete(`${baseUrl}/vocab/:id`, async ({ params, request }) => {
+      if (request.headers.has(customUserIdHeader)) {
+        words = words.filter((w) => w.id.toString() !== params.id);
+        return HttpResponse.json();
+      }
     }),
     http.post(
       `${baseUrl}/vocab/:wordId/examples`,
       async ({ params, request }) => {
-        const { example } = (await request.json()) as { example: string };
-        const newExampleId = uuid();
-        const newExample = { id: newExampleId, example };
-        words = words.map((w) =>
-          w.id.toString() !== params.wordId
-            ? w
-            : { ...w, examples: [...w.examples, newExample] },
-        );
-        return HttpResponse.json(newExample);
+        if (request.headers.has(customUserIdHeader)) {
+          const { example } = (await request.json()) as { example: string };
+          const newExampleId = uuid();
+          const newExample = { id: newExampleId, example };
+          words = words.map((w) =>
+            w.id.toString() !== params.wordId
+              ? w
+              : { ...w, examples: [...w.examples, newExample] },
+          );
+          return HttpResponse.json(newExample);
+        }
       },
     ),
   );
