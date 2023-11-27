@@ -9,7 +9,7 @@ export const customUserIdHeader = "x-user-identifier";
 const getHeaders = () => ({
   Accept: "application/json",
   "Content-Type": "application/json",
-  [customUserIdHeader]: localStorage.getItem("user-id") ?? "",
+  [customUserIdHeader]: JSON.parse(localStorage.getItem("user-id") ?? ''),
 });
 
 const backendCall = (
