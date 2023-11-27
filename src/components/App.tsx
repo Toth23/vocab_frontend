@@ -13,6 +13,7 @@ import {
   getBackendCalls,
 } from "../utils/getBackendCalls.ts";
 import { v4 as uuid } from "uuid";
+import useLocalStorageState from "use-local-storage-state";
 
 const fetcher = ({ url, userId }: { url: string; userId: string }) =>
   fetch(url, { headers: { [customUserIdHeader]: userId } }).then((res) =>
@@ -20,11 +21,9 @@ const fetcher = ({ url, userId }: { url: string; userId: string }) =>
   );
 
 function App() {
-  let userId = localStorage.getItem("user-id");
-  if (!userId) {
-    userId = uuid();
-    localStorage.setItem("user-id", userId);
-  }
+  const [userId] = useLocalStorageState<string>("user-id", {
+    defaultValue: localStorage.getItem("user-id") ?? uuid(),
+  });
 
   const { data, error, isLoading, mutate } = useSWR(
     { url: `${baseUrl}/vocab`, userId },
