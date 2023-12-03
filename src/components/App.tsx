@@ -14,6 +14,7 @@ import {
 } from "../utils/getBackendCalls.ts";
 import { v4 as uuid } from "uuid";
 import useLocalStorageState from "use-local-storage-state";
+import { UserPopover } from "./UserPopover.tsx";
 
 const fetcher = ({ url, userId }: { url: string; userId: string }) =>
   fetch(url, { headers: { [customUserIdHeader]: userId } }).then((res) =>
@@ -21,7 +22,7 @@ const fetcher = ({ url, userId }: { url: string; userId: string }) =>
   );
 
 function App() {
-  const [userId] = useLocalStorageState<string>("user-id", {
+  const [userId, setUserId] = useLocalStorageState<string>("user-id", {
     defaultValue: localStorage.getItem("user-id") ?? uuid(),
   });
 
@@ -62,6 +63,7 @@ function App() {
             onClick={() => setIsNewWordModalOpen(true)}
           />
         </Tooltip>
+        <UserPopover userId={userId} setUserId={setUserId} />
       </Layout.Header>
       <div className="wordlist">
         {data.words.map((word: Word) => (
