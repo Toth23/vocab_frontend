@@ -1,19 +1,33 @@
 import "../styles/App.css";
 import useSWR from "swr";
-import { AppState, Word } from "../utils/types.ts";
+import { Word } from "../utils/types.ts";
 import { NewWordModal } from "./NewWordModal.tsx";
 import { WordDisplay } from "./WordDisplay.tsx";
 import { Button, Image, Layout, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import logo from "../assets/知识_white.png";
-import { baseUrl, getBackendCalls } from "../utils/getBackendCalls.ts";
+import {
+  baseUrl,
+  customUserIdHeader,
+  getBackendCalls,
+} from "../utils/getBackendCalls.ts";
+import { v4 as uuid } from "uuid";
+import useLocalStorageState from "use-local-storage-state";
+import { UserPopover } from "./UserPopover.tsx";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = ({ url, userId }: { url: string; userId: string }) =>
+  fetch(url, { headers: { [customUserIdHeader]: userId } }).then((res) =>
+    res.json(),
+  );
 
 function App() {
-  const { data, error, isLoading, mutate } = useSWR<AppState>(
-    `${baseUrl}/vocab`,
+  const [userId, setUserId] = useLocalStorageState<string>("user-id", {
+    defaultValue: localStorage.getItem("user-id") ?? uuid(),
+  });
+
+  const { data, error, isLoading, mutate } = useSWR(
+    { url: `${baseUrl}/vocab`, userId },
     fetcher,
   );
 
@@ -49,6 +63,7 @@ function App() {
             onClick={() => setIsNewWordModalOpen(true)}
           />
         </Tooltip>
+        <UserPopover userId={userId} setUserId={setUserId} />
       </Layout.Header>
       <div className="wordlist">
         {data.words.map((word: Word) => (
