@@ -3,7 +3,7 @@ import useSWR from "swr";
 import { Word } from "../utils/types.ts";
 import { NewWordModal } from "./NewWordModal.tsx";
 import { WordDisplay } from "./WordDisplay.tsx";
-import { Button, Image, Layout, Tooltip } from "antd";
+import { Button, Image, Layout } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import logo from "../assets/知识_white.png";
@@ -55,14 +55,14 @@ function App() {
           style={{ paddingTop: 4 }}
           preview={false}
         />
-        <Tooltip title={"Add new word"}>
-          <Button
-            shape={"circle"}
-            size={"large"}
-            icon={<PlusOutlined />}
-            onClick={() => setIsNewWordModalOpen(true)}
-          />
-        </Tooltip>
+        <Button
+          shape={"default"}
+          size={"large"}
+          icon={<PlusOutlined />}
+          onClick={() => setIsNewWordModalOpen(true)}
+        >
+          Add Word
+        </Button>
         <UserPopover userId={userId} setUserId={setUserId} />
       </Layout.Header>
       <div className="wordlist">
