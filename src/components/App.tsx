@@ -3,7 +3,7 @@ import useSWR from "swr";
 import { Word } from "../utils/types.ts";
 import { NewWordModal } from "./NewWordModal.tsx";
 import { WordDisplay } from "./WordDisplay.tsx";
-import { Button, Image, Layout } from "antd";
+import { Button, Image, Layout, Result, Spin } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import logo from "../assets/知识_white.png";
@@ -33,8 +33,23 @@ function App() {
 
   const [isNewWordModalOpen, setIsNewWordModalOpen] = useState(false);
 
-  if (isLoading) return "Loading...";
-  if (error || !data) return "An error has occurred.";
+  if (isLoading) {
+    return (
+      <Spin tip={"Loading..."} size={"large"}>
+        <div style={{ height: "80vh" }} />
+      </Spin>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <Result
+        status="error"
+        title="An error has occurred"
+        subTitle="The app could not be loaded correctly."
+      />
+    );
+  }
 
   const { addWord, editWord, deleteWord, addExample, deleteExample } =
     getBackendCalls(data, mutate);
