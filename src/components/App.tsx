@@ -15,6 +15,7 @@ import {
 import { v4 as uuid } from "uuid";
 import useLocalStorageState from "use-local-storage-state";
 import { UserPopover } from "./UserPopover.tsx";
+import { Greeting } from "./Greeting.tsx";
 
 const fetcher = ({ url, userId }: { url: string; userId: string }) =>
   fetch(url, { headers: { [customUserIdHeader]: userId } }).then((res) =>
@@ -54,32 +55,35 @@ function App() {
   const { addWord, editWord, deleteWord, addExample, deleteExample } =
     getBackendCalls(data, mutate);
 
-  return (
-    <Layout>
-      <Layout.Header
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
+  const headerRow = (
+    <Layout.Header
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
+      <Image
+        src={logo}
+        height={60}
+        width={128}
+        style={{ paddingTop: 4 }}
+        preview={false}
+      />
+      <Button
+        shape={"default"}
+        size={"large"}
+        icon={<PlusOutlined />}
+        onClick={() => setIsNewWordModalOpen(true)}
       >
-        <Image
-          src={logo}
-          height={60}
-          width={128}
-          style={{ paddingTop: 4 }}
-          preview={false}
-        />
-        <Button
-          shape={"default"}
-          size={"large"}
-          icon={<PlusOutlined />}
-          onClick={() => setIsNewWordModalOpen(true)}
-        >
-          Add Word
-        </Button>
-        <UserPopover userId={userId} setUserId={setUserId} />
-      </Layout.Header>
+        Add Word
+      </Button>
+      <UserPopover userId={userId} setUserId={setUserId} />
+    </Layout.Header>
+  );
+
+  const mainContent =
+    data.words.length > 0 ? (
       <div className="wordlist">
         {data.words.map((word: Word) => (
           <WordDisplay
@@ -92,6 +96,14 @@ function App() {
           />
         ))}
       </div>
+    ) : (
+      <Greeting />
+    );
+
+  return (
+    <Layout>
+      {headerRow}
+      {mainContent}
       <NewWordModal
         addWord={addWord}
         isModalOpen={isNewWordModalOpen}
