@@ -1,27 +1,27 @@
-# React + TypeScript + Vite
+# Frontend for 知识, a vocabulary website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a Frontend for [知识](https://github.com/Toth23/vocab_crud), a simple CRUD service to manage vocabulary that you are learning.
 
-Currently, two official plugins are available:
+The idea is to provide a simple and clean UI for recording any vocabulary that you learn ina foreign language.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technologies
 
-## Expanding the ESLint configuration
+The following technologies are used:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- [TypeSCript](https://www.typescriptlang.org/) programming language
+- [React](https://react.dev/) front-end library
+- [Ant Design](https://ant.design/) component library
+- [Vite](https://vitejs.dev/) dev server and bundler
+- [Testing Library](https://testing-library.com/) and [Vitest](https://vitest.dev/) for unit and integration testing
+- [Github Actions](https://docs.github.com/en/actions) for CI/CD
+- [Netlify](https://www.netlify.com/) for the deployed instance
 
-- Configure the top-level `parserOptions` property like this:
+## Local development setup
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+Simply
+
+```shell
+yarn dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+starts the application. By default, it assumes a local backend running on `http://localhost:3000`. A different backend instance can be configured by the environment variable `VITE_API_URL`.
