@@ -6,6 +6,7 @@ import { setupServer } from "msw/node";
 import userEvent from "@testing-library/user-event";
 import { Word, WordCreation } from "../utils/types.ts";
 import { v4 as uuid } from "uuid";
+import { SWRConfig } from "swr";
 
 describe("The App", () => {
   let words: Word[] = [
@@ -79,15 +80,36 @@ describe("The App", () => {
 
   it("should display the loading state", () => {
     // when
-    render(<App />);
+    renderAppWithoutCache();
 
     // then
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
+  it("should display the greeting if the user has no saved words", async () => {
+    // given
+    server.use(
+      http.get(`${baseUrl}/vocab`, ({ request }) => {
+        if (request.headers.has(customUserIdHeader)) {
+          return HttpResponse.json({ words: [] });
+        }
+      }),
+    );
+
+    // when
+    renderAppWithoutCache();
+
+    await waitFor(() => {
+      expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
+    });
+
+    // then
+    expect(await screen.findByText("Hello there!")).toBeInTheDocument();
+  });
+
   it("should load all words from the backend", async () => {
     // when
-    render(<App />);
+    renderAppWithoutCache();
 
     await waitFor(() => {
       expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
@@ -127,7 +149,7 @@ describe("The App", () => {
 
   it("should add an example", async () => {
     // when
-    render(<App />);
+    renderAppWithoutCache();
 
     await waitFor(() => {
       expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
@@ -150,7 +172,7 @@ describe("The App", () => {
 
   it("should add another word", async () => {
     // when
-    render(<App />);
+    renderAppWithoutCache();
 
     await waitFor(() => {
       expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
@@ -173,7 +195,7 @@ describe("The App", () => {
 
   it("should delete a word", async () => {
     // when
-    render(<App />);
+    renderAppWithoutCache();
 
     await waitFor(() => {
       expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
@@ -190,3 +212,11 @@ describe("The App", () => {
     expect(screen.getByText("word 2")).toBeInTheDocument();
   });
 });
+
+function renderAppWithoutCache() {
+  render(
+    <SWRConfig value={{ provider: () => new Map() }}>
+      <App />
+    </SWRConfig>,
+  );
+}

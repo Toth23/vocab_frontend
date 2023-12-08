@@ -3,7 +3,7 @@ import useSWR from "swr";
 import { Word } from "../utils/types.ts";
 import { NewWordModal } from "./NewWordModal.tsx";
 import { WordDisplay } from "./WordDisplay.tsx";
-import { Button, Image, Layout, Tooltip } from "antd";
+import { Button, Image, Layout, Result, Spin } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import logo from "../assets/知识_white.png";
@@ -15,6 +15,7 @@ import {
 import { v4 as uuid } from "uuid";
 import useLocalStorageState from "use-local-storage-state";
 import { UserPopover } from "./UserPopover.tsx";
+import { Greeting } from "./Greeting.tsx";
 
 const fetcher = ({ url, userId }: { url: string; userId: string }) =>
   fetch(url, { headers: { [customUserIdHeader]: userId } }).then((res) =>
@@ -33,38 +34,56 @@ function App() {
 
   const [isNewWordModalOpen, setIsNewWordModalOpen] = useState(false);
 
-  if (isLoading) return "Loading...";
-  if (error || !data) return "An error has occurred.";
+  if (isLoading) {
+    return (
+      <Spin tip={"Loading..."} size={"large"}>
+        <div style={{ height: "80vh" }} />
+      </Spin>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <Result
+        status="error"
+        title="An error has occurred"
+        subTitle="The app could not be loaded correctly."
+      />
+    );
+  }
 
   const { addWord, editWord, deleteWord, addExample, deleteExample } =
     getBackendCalls(data, mutate);
 
-  return (
-    <Layout>
-      <Layout.Header
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
+  const headerRow = (
+    <Layout.Header
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
+      <Image
+        src={logo}
+        height={60}
+        width={128}
+        style={{ paddingTop: 4 }}
+        preview={false}
+      />
+      <Button
+        shape={"default"}
+        size={"large"}
+        icon={<PlusOutlined />}
+        onClick={() => setIsNewWordModalOpen(true)}
       >
-        <Image
-          src={logo}
-          height={60}
-          width={128}
-          style={{ paddingTop: 4 }}
-          preview={false}
-        />
-        <Tooltip title={"Add new word"}>
-          <Button
-            shape={"circle"}
-            size={"large"}
-            icon={<PlusOutlined />}
-            onClick={() => setIsNewWordModalOpen(true)}
-          />
-        </Tooltip>
-        <UserPopover userId={userId} setUserId={setUserId} />
-      </Layout.Header>
+        Add Word
+      </Button>
+      <UserPopover userId={userId} setUserId={setUserId} />
+    </Layout.Header>
+  );
+
+  const mainContent =
+    data.words.length > 0 ? (
       <div className="wordlist">
         {data.words.map((word: Word) => (
           <WordDisplay
@@ -77,6 +96,14 @@ function App() {
           />
         ))}
       </div>
+    ) : (
+      <Greeting />
+    );
+
+  return (
+    <Layout>
+      {headerRow}
+      {mainContent}
       <NewWordModal
         addWord={addWord}
         isModalOpen={isNewWordModalOpen}
