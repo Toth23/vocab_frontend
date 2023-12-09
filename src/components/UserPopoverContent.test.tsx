@@ -64,8 +64,17 @@ describe("The User Popover Content", () => {
     const newUserId = "another ID";
 
     // when
-    const newUserIdField = screen.getByLabelText("New User ID");
-    await userEvent.type(newUserIdField, newUserId);
+    const userIdInput = screen.getByPlaceholderText("Type your User ID here");
+    await userEvent.clear(userIdInput);
+    await userEvent.click(screen.getByText("Save"));
+
+    // then
+    expect(
+      screen.getByText("Your User ID cannot be empty!"),
+    ).toBeInTheDocument();
+
+    // when
+    await userEvent.type(userIdInput, newUserId);
 
     await userEvent.click(screen.getByText("Save"));
 
