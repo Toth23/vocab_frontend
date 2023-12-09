@@ -16,3 +16,7 @@
   flex-direction: column;
   justify-content: space-between;
 }
+
+.greeting-paragraph {
+  max-width: 400px;
+}
