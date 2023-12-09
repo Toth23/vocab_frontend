@@ -57,6 +57,7 @@ function App() {
 
   const headerRow = (
     <Layout.Header
+      className="app-header"
       style={{
         display: "flex",
         alignItems: "center",

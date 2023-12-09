@@ -20,3 +20,13 @@
 .greeting-paragraph {
   max-width: 400px;
 }
+
+.app-header {
+  padding: 0 30px;
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 10px;
+  }
+}
