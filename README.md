@@ -8,7 +8,7 @@ The idea is to provide a simple and clean UI for recording any vocabulary that y
 
 The following technologies are used:
 
-- [TypeSCript](https://www.typescriptlang.org/) programming language
+- [TypeScript](https://www.typescriptlang.org/) programming language
 - [React](https://react.dev/) front-end library
 - [Ant Design](https://ant.design/) component library
 - [Vite](https://vitejs.dev/) dev server and bundler

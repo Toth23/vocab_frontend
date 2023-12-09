@@ -1,15 +1,7 @@
-import {
-  Button,
-  Checkbox,
-  Divider,
-  Flex,
-  Form,
-  Input,
-  Modal,
-  Tooltip,
-} from "antd";
+import { Button, Divider, Flex, Form, Input, Modal, Tooltip } from "antd";
 import { MinusCircleOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { WordCreation } from "../utils/types.ts";
+import "../styles/NewWordModal.css";
 
 interface NewWordProps {
   isModalOpen: boolean;
@@ -24,18 +16,17 @@ export const NewWordModal = ({
 }: NewWordProps) => {
   const [form] = Form.useForm();
 
-  const handleFinish = async () => {
+  const handleFinish = async (shouldCreateAnother = false) => {
     const word = form.getFieldValue("word");
     const translation = form.getFieldValue("translation");
     const source = form.getFieldValue("source");
     const examples = form
       .getFieldValue("examples")
-      .filter((ex: string) => ex.trim().length > 0);
+      .filter((ex: string | undefined) => ex && ex.trim().length > 0);
 
     await addWord({ word, translation, source, examples });
 
-    const createAnother = form.getFieldValue("another");
-    if (createAnother) {
+    if (shouldCreateAnother) {
       form.resetFields(["word", "translation", "examples"]);
     } else {
       form.resetFields();
@@ -53,7 +44,7 @@ export const NewWordModal = ({
     >
       <Form
         form={form}
-        onFinish={handleFinish}
+        onFinish={() => handleFinish(false)}
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 12 }}
       >
@@ -88,9 +79,9 @@ export const NewWordModal = ({
                     wrapperCol={{ span: 16 }}
                     style={{ flex: "1" }}
                   >
-                    <Input
+                    <Input.TextArea
+                      rows={1}
                       placeholder="Enter example (or leave empty)"
-                      style={{}}
                     />
                   </Form.Item>
                   <MinusCircleOutlined
@@ -111,18 +102,8 @@ export const NewWordModal = ({
           )}
         </Form.List>
         <Divider />
-        <Form.Item
-          name={"another"}
-          label={"Create another"}
-          valuePropName="checked"
-          labelCol={{ span: 8, offset: 14 }}
-          wrapperCol={{ span: 2 }}
-          style={{ margin: 0 }}
-        >
-          <Checkbox />
-        </Form.Item>
-        <Form.Item wrapperCol={{ flex: 1 }}>
-          <Flex justify={"space-between"} style={{ padding: 20 }}>
+        <Form.Item wrapperCol={{}}>
+          <div className={"add-word-button-row"}>
             <Button
               onClick={() => {
                 form.resetFields();
@@ -131,10 +112,19 @@ export const NewWordModal = ({
             >
               Cancel
             </Button>
-            <Button type={"primary"} htmlType={"submit"}>
-              Save
-            </Button>
-          </Flex>
+            <div className={"add-word-save-buttons"}>
+              <Button type={"primary"} ghost onClick={() => handleFinish(true)}>
+                Save & Add another
+              </Button>
+              <Button
+                style={{ marginLeft: 10 }}
+                type={"primary"}
+                htmlType={"submit"}
+              >
+                Save
+              </Button>
+            </div>
+          </div>
         </Form.Item>
       </Form>
     </Modal>

@@ -27,11 +27,11 @@ export const UserPopoverContent = ({
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleFinish = () => {
-    const newUserId = form.getFieldValue("newUserId");
+    const newUserId = form.getFieldValue("userId");
 
     setUserId(newUserId);
     form.resetFields();
-    form.setFieldValue("oldUserId", newUserId);
+    form.setFieldValue("userId", newUserId);
     closePopover();
   };
 
@@ -59,25 +59,26 @@ export const UserPopoverContent = ({
       <Form
         form={form}
         onFinish={handleFinish}
-        initialValues={{ oldUserId: userId }}
+        initialValues={{ userId: userId }}
         layout={"vertical"}
       >
-        <Form.Item label={"Current User ID"}>
+        <Form.Item label={"User ID"} required={true}>
           <Space.Compact>
             {contextHolder}
-            <Form.Item name={"oldUserId"}>
-              <Input.Password readOnly style={{ minWidth: 300 }} />
+            <Form.Item
+              name={"userId"}
+              validateTrigger={"onBlur"}
+              rules={[
+                { required: true, message: "Your User ID cannot be empty!" },
+              ]}
+            >
+              <Input.Password
+                placeholder={"Type your User ID here"}
+                style={{ minWidth: 300 }}
+              />
             </Form.Item>
             <Button icon={<CopyOutlined />} onClick={copyToClipboard} />
           </Space.Compact>
-        </Form.Item>
-        <Form.Item
-          name={"newUserId"}
-          label={"New User ID"}
-          required={true}
-          rules={[{ required: true, message: "Your User ID cannot be empty!" }]}
-        >
-          <Input />
         </Form.Item>
         <Form.Item>
           <Flex justify={"space-between"}>

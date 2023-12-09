@@ -56,13 +56,7 @@ function App() {
     getBackendCalls(data, mutate);
 
   const headerRow = (
-    <Layout.Header
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}
-    >
+    <Layout.Header className="app-header">
       <Image
         src={logo}
         height={60}

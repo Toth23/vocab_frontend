@@ -1,7 +1,7 @@
 .wordlist {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  justify-content: space-evenly;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  justify-items: center;
 }
 
 .word-card {
@@ -15,4 +15,17 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.app-header {
+  padding: 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 10px;
+  }
 }
