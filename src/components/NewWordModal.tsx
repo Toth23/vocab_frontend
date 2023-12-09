@@ -30,7 +30,7 @@ export const NewWordModal = ({
     const source = form.getFieldValue("source");
     const examples = form
       .getFieldValue("examples")
-      .filter((ex: string) => ex.trim().length > 0);
+      .filter((ex: string | undefined) => ex && ex.trim().length > 0);
 
     await addWord({ word, translation, source, examples });
 
