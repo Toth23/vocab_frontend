@@ -16,18 +16,20 @@ export const Greeting = () => (
             justifyContent: "space-between",
           }}
         >
-          <Title level={3}>Hello there!</Title>
+          <Title level={2}>Hello there!</Title>
           <Paragraph className={"greeting-paragraph"}>
             This is a simple website to record any vocabulary that you have
             learned (optionally with translations and examples).
           </Paragraph>
+          <Title level={4}>How to start?</Title>
           <Paragraph className={"greeting-paragraph"}>
-            If you're new here, just look around and add some words that you've
-            recently learned.
+            Just add some words that you've recently learned.
           </Paragraph>
+          <Title level={4}>Where is my previous vocabulary?</Title>
           <Paragraph className={"greeting-paragraph"}>
-            If you've been here before and missing your data, you might want to
-            switch your User ID to what you had before.
+            The data is associated with your User ID (stored in the browser). If
+            you want to sync across browsers, just set your User ID to the same
+            value.
           </Paragraph>
         </div>
       }
