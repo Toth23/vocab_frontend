@@ -23,7 +23,7 @@ export const UserPopover = ({ userId, setUserId }: UserPopoverProps) => {
       title="Switch User ID"
       trigger="click"
       open={isUserPopoverOpen}
-      onOpenChange={() => setIsUserPopoverOpen(true)}
+      onOpenChange={(isOpen) => setIsUserPopoverOpen(isOpen)}
     >
       <Button shape={"circle"} size={"large"} icon={<UserOutlined />} />
     </Popover>
