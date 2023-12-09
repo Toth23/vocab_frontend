@@ -1,0 +1,10 @@
+.greeting-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.greeting-paragraph {
+  max-width: 400px;
+}

@@ -1,5 +1,6 @@
 import { Empty, Typography } from "antd";
 import translatorIcon from "../assets/translator-icon.png";
+import "../styles/Greeting.css";
 
 const { Paragraph, Title } = Typography;
 
@@ -8,14 +9,7 @@ export const Greeting = () => (
     <Empty
       image={translatorIcon}
       description={
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
+        <div className={"greeting-wrapper"}>
           <Title level={2}>Hello there!</Title>
           <Paragraph className={"greeting-paragraph"}>
             This is a simple website to record any vocabulary that you have
