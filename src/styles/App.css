@@ -23,6 +23,9 @@
 
 .app-header {
   padding: 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 @media (max-width: 768px) {
