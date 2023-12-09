@@ -66,8 +66,7 @@ describe("The NewWordModal", () => {
     const wordField = screen.getByLabelText("Word");
     await userEvent.type(wordField, "some word");
 
-    await userEvent.click(screen.getByLabelText("Create another"));
-    await userEvent.click(screen.getByText("Save"));
+    await userEvent.click(screen.getByText("Save & Add another"));
 
     // then
     const expectedWordCreation = {
