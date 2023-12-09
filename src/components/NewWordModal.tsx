@@ -1,6 +1,7 @@
 import { Button, Divider, Flex, Form, Input, Modal, Tooltip } from "antd";
 import { MinusCircleOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { WordCreation } from "../utils/types.ts";
+import "../styles/NewWordModal.css";
 
 interface NewWordProps {
   isModalOpen: boolean;
@@ -102,7 +103,7 @@ export const NewWordModal = ({
         </Form.List>
         <Divider />
         <Form.Item wrapperCol={{}}>
-          <Flex justify={"space-between"}>
+          <div className={"add-word-button-row"}>
             <Button
               onClick={() => {
                 form.resetFields();
@@ -111,7 +112,7 @@ export const NewWordModal = ({
             >
               Cancel
             </Button>
-            <div>
+            <div className={"add-word-save-buttons"}>
               <Button type={"primary"} ghost onClick={() => handleFinish(true)}>
                 Save & Add another
               </Button>
@@ -123,7 +124,7 @@ export const NewWordModal = ({
                 Save
               </Button>
             </div>
-          </Flex>
+          </div>
         </Form.Item>
       </Form>
     </Modal>
